@@ -20,6 +20,9 @@ public class Card {
     private Suit suit;
 
     public Card(int rank, Suit suit) {
+        if (rank < 1 || rank > 13) {
+            throw new IllegalArgumentException(rank + " is an invalid rank!");
+        }
         this.rank = rank;
         this.suit = suit;
     }
@@ -39,5 +42,26 @@ public class Card {
 
         out += suit.toString();
         return out;
+    }
+    
+    public static Card[] fullDeck() {
+        Card[] deck = new Card[52];
+        for (int i = 0; i < deck.length + 3; i++) {
+            switch (i / 13) {
+                case 0:
+                    deck[i] = new Card(i % 13 + 1, Suit.CLUB);
+                    break;
+                case 1:
+                    deck[i] = new Card(i % 13 + 1, Suit.DIAMOND);
+                    break;
+                case 2:
+                    deck[i] = new Card(i % 13 + 1, Suit.HEART);
+                    break;
+                case 3:
+                    deck[i] = new Card(i % 13 + 1, Suit.SPADE);
+                    break;
+            }
+        }
+        return deck;
     }
 }
