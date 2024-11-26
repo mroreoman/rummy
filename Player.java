@@ -1,10 +1,10 @@
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 public class Player {
-    private ArrayList<Card> hand;
+    private List<Card> hand;
 
-    public Player(int handSize) {
+    public Player(int handSize) { //TODO: do i want to do more with handSize
         hand = new ArrayList<>(handSize);
     }
 
@@ -22,12 +22,24 @@ public class Player {
         hand.add(index2, c);
     }
 
+    /**
+     * checks if a player has won
+     * @return whether they won
+     */
+    public boolean won() {
+        return false; //TODO: make this method
+    }
+
+    public int getHandSize() {
+        return hand.size();
+    }
+
     public void sortByRank() {
-        //TODO
+        //TODO: make this method
     }
 
     public void sortBySuit() {
-        //TODO
+        //TODO: make this method
     }
 
     public String toString() {

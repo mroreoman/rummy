@@ -9,10 +9,10 @@ public class ComputerPlayer extends Player {
      * @return true if it should draw from the draw pile
      */
     public boolean drawLocation(Card discardCard) {
-        return true; //TODO
+        return true; //TODO: make this method
     }
 
     public int cardToDiscard() {
-        return 0; //TODO
+        return 0; //TODO: make this method
     }
 }

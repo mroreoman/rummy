@@ -1,4 +1,5 @@
 class Main {
+    /*
     public static void main(String[] args) {
         Card c1 = new Card(1, Card.Suit.SPADE);
         Card c2 = new Card(7, Card.Suit.HEART);
@@ -9,5 +10,11 @@ class Main {
         for (Card c : cArr) {
             System.out.println(c);
         }
+    }
+    */
+
+    public static void main(String[] args) {
+        Rummy game = new Rummy(10);
+        while (game.turn());
     }
 }
