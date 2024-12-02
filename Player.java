@@ -3,9 +3,11 @@ import java.util.List;
 
 public class Player {
     private List<Card> hand;
+    private int handSize;
 
-    public Player(int handSize) { //TODO: do i want to do more with handSize
+    public Player(int handSize) {
         hand = new ArrayList<>(handSize);
+        this.handSize = handSize; //TODO: maybe want to check hand size at the end of each turn?
     }
 
     public void draw(Card c) {
@@ -31,7 +33,7 @@ public class Player {
     }
 
     public int getHandSize() {
-        return hand.size();
+        return handSize;
     }
 
     public void sortByRank() {
