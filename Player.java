@@ -1,13 +1,12 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Player {
     private List<Card> hand;
-    private int handSize;
 
     public Player(int handSize) {
         hand = new ArrayList<>(handSize);
-        this.handSize = handSize; //TODO: maybe want to check hand size at the end of each turn?
     }
 
     public void draw(Card c) {
@@ -32,16 +31,8 @@ public class Player {
         return false; //TODO: make this method
     }
 
-    public int getHandSize() {
-        return handSize;
-    }
-
-    public void sortByRank() {
-        //TODO: make this method
-    }
-
-    public void sortBySuit() {
-        //TODO: make this method
+    public void sortHand() {
+        Collections.sort(hand);
     }
 
     public String toString() {

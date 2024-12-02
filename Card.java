@@ -1,6 +1,6 @@
 import java.util.Arrays;
 
-public class Card {
+public class Card implements Comparable<Card> {
     public enum Suit {
         SPADES("\u0006"), //♠
         CLUBS("\u0005"), //♣
@@ -18,14 +18,14 @@ public class Card {
         }
 
         public static Suit getEnum(String value) {
-            value = value.toLowerCase();
-            if (value == SPADES.symbol || value == "s") {
+            value = value.toUpperCase();
+            if (value.equals(SPADES.symbol) || value.equals("S")) {
                 return SPADES;
-            } else if (value == CLUBS.symbol || value == "c") {
+            } else if (value.equals(CLUBS.symbol) || value.equals("C")) {
                 return CLUBS;
-            } else if (value == HEARTS.symbol || value == "h") {
+            } else if (value.equals(HEARTS.symbol) || value.equals("H")) {
                 return HEARTS;
-            } else if (value == DIAMONDS.symbol || value == "d") {
+            } else if (value.equals(DIAMONDS.symbol) || value.equals("D")) {
                 return DIAMONDS;
             } else {
                 return null;
@@ -37,7 +37,7 @@ public class Card {
         ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING;
         
         public String toString() {
-            int val = ordinal() + 1;
+            int val = rank();
             if (val == 1) {
                 return "A";
             } else if (val == 11) {
@@ -51,7 +51,12 @@ public class Card {
             }
         }
 
-        public static Rank getEnum(String val) {
+        public int rank() {
+            return ordinal() + 1;
+        }
+
+        public static Rank getEnum(String value) {
+            String val = value.toUpperCase();
             return Arrays.stream(values()).filter(rank -> rank.toString().equals(val)).findAny().orElse(null);
         }
     }
@@ -72,28 +77,31 @@ public class Card {
         this.suit = suit;
     }
 
-    public Card(String cardStr) {
-        this(
-            Rank.getEnum(cardStr.substring(0, cardStr.length() - 1)),
-            Suit.getEnum(cardStr.substring(cardStr.length() - 1))
-        );
+    public Card(String cardStr) throws IllegalArgumentException {
+        String rankStr = cardStr.substring(0, cardStr.length() - 1);
+        Rank rank = Rank.getEnum(rankStr);
+        if (rank == null) {
+            throw new IllegalArgumentException("invalid rank '" + rankStr + "'");
+        }
+        this.rank = rank;
+
+        String suitStr = cardStr.substring(cardStr.length() - 1);
+        Suit suit = Suit.getEnum(suitStr);
+        if (suit == null) {
+            throw new IllegalArgumentException("invalid suit '" + suitStr + "'");
+        }
+        this.suit = suit;
     }
 
     public String toString() {
-        // String out = String.valueOf(rank);
-
-        // if (rank == 1) {
-        //     out = "A";
-        // } else if (rank == 11) {
-        //     out = "J";
-        // } else if (rank == 12) {
-        //     out = "Q";
-        // } else if (rank == 13) {
-        //     out = "K";
-        // }
-
-        // out += suit.toString();
-        // return out;
         return rank.toString() + suit.toString();
+    }
+
+    public int compareTo(Card c) {
+        if (suit.compareTo(c.suit) == 0) {
+            return rank.compareTo(c.rank);
+        } else {
+            return suit.compareTo(c.suit);
+        }
     }
 }

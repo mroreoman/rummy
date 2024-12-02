@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -12,6 +11,7 @@ public class Rummy {
     private Stack<Card> discardPile;
     private Player player;
     private ComputerPlayer computer;
+    private int handSize;
     private Scanner scan;
 
     /**
@@ -24,7 +24,7 @@ public class Rummy {
         discardPile = new Stack<Card>();
         player = new Player(handSize);
         computer = new ComputerPlayer(handSize);
-        scan = new Scanner(System.in);
+        this.handSize = handSize;
     }
 
     public void start() {
@@ -35,7 +35,7 @@ public class Rummy {
         // System.out.println(drawPile);
 
         System.out.println("Dealing cards.");
-        for (int i = 0; i < player.getHandSize(); i++) {
+        for (int i = 0; i < handSize; i++) {
             player.draw(drawPile.remove());
             computer.draw(drawPile.remove());
         }
@@ -43,6 +43,7 @@ public class Rummy {
         // System.out.println("computer: " + computer);
 
         System.out.println("Starting game.");
+        scan = new Scanner(System.in);
         while (turn());
     }
 
@@ -91,34 +92,23 @@ public class Rummy {
         return true;
     }
 
-    private void drawCard(Card newCard) {
+    private void drawCard(Card newCard) { //TODO: finish method
         System.out.println("Drawing card.");
-        System.out.println("Your hand: " + player);
-        System.out.println("New card: " + newCard);
-        System.out.println("Enter \"new\" to discard new card");
-        System.out.println("Enter number to discard card from hand");
-        String choice = scan.next().toLowerCase();
-        if (choice.equals("new")) {
-            discardPile.add(newCard);
-        } else {
-            // try caling new Card(String card)
-
-            // try {
-            //     int num = Integer.parseInt(choice);
-            //     if (num >= 1 && num <= player.getHandSize()) {
-            //         discardPile.add(player.discard(num));
-            //         player.draw(newCard);
-            //     } else {
-            //         System.out.println("invalid number choice");
-            //     }
-            // } catch (NumberFormatException e) {
-            //     System.out.println("invalid choice");
-            // }
-        }
+        System.out.println("Your hand: " + player + "    " + newCard);
+        System.out.print("Enter card to discard (J♠/Js are valid formats): ");
+        String cardStr = scan.next().toLowerCase();
+        Card card = new Card(cardStr); // throws exception if invalid card
+        // if card is new card
+            // return?
+        // else if card is in hand
+            // do things
+        // else
+            // print invalid card
+            // ask for input again
     }
 
-    private void rearrangeHand() {
-        //TODO: make this method
+    private void rearrangeHand() { //TODO: add manual swapping
+        player.sortHand();
     }
 
     private void finish() {
