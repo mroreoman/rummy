@@ -4,15 +4,11 @@ public class ComputerPlayer extends Player {
     }
 
     /**
-     * calculates whether to draw from discrad pile or draw pile
+     * calculates whether to draw from stock or draw pile
      * @param discardCard - top card of discard pile
-     * @return true if it should draw from the draw pile
+     * @return true if it should draw from the stock
      */
-    public boolean drawLocation(Card discardCard) {
-        return true; //TODO: make this method
-    }
+    // public boolean drawLocation(Card discardCard) { }
 
-    public int cardToDiscard() {
-        return 0; //TODO: make this method
-    }
+    // public int cardToDiscard() { }
 }

@@ -2,30 +2,32 @@ import java.util.Arrays;
 
 public class Card implements Comparable<Card> {
     public enum Suit {
-        SPADES("\u0006"), //♠
-        CLUBS("\u0005"), //♣
-        HEARTS("\u0003"), //♥
-        DIAMONDS("\u0004"); //♦
+        SPADES("\u0006", TextColoring.BLUE), //♠
+        CLUBS("\u0005", TextColoring.GREEN), //♣
+        HEARTS("\u0003", TextColoring.RED), //♥
+        DIAMONDS("\u0004", TextColoring.YELLOW); //♦
 
         private String symbol;
+        private String color;
 
-        Suit(String symbol) {
+        Suit(String symbol, String color) {
             this.symbol = symbol;
+            this.color = color;
         }
 
+        @Override
         public String toString() {
-            return symbol;
+            return color + symbol + TextColoring.RESET;
         }
 
         public static Suit getEnum(String value) {
-            value = value.toUpperCase();
-            if (value.equals(SPADES.symbol) || value.equals("S")) {
+            if (value.equals(SPADES.symbol) || value.equalsIgnoreCase("S")) {
                 return SPADES;
-            } else if (value.equals(CLUBS.symbol) || value.equals("C")) {
+            } else if (value.equals(CLUBS.symbol) || value.equalsIgnoreCase("C")) {
                 return CLUBS;
-            } else if (value.equals(HEARTS.symbol) || value.equals("H")) {
+            } else if (value.equals(HEARTS.symbol) || value.equalsIgnoreCase("H")) {
                 return HEARTS;
-            } else if (value.equals(DIAMONDS.symbol) || value.equals("D")) {
+            } else if (value.equals(DIAMONDS.symbol) || value.equalsIgnoreCase("D")) {
                 return DIAMONDS;
             } else {
                 return null;
@@ -36,28 +38,29 @@ public class Card implements Comparable<Card> {
     public enum Rank {
         ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING;
         
+        private int rank;
+
+        Rank() {
+            rank = ordinal() + 1;
+        }
+
+        @Override
         public String toString() {
-            int val = rank();
-            if (val == 1) {
+            if (rank == 1) {
                 return "A";
-            } else if (val == 11) {
+            } else if (rank == 11) {
                 return "J";
-            } else if (val == 12) {
+            } else if (rank == 12) {
                 return "Q";
-            } else if (val == 13) {
+            } else if (rank == 13) {
                 return "K";
             } else {
-                return Integer.toString(val);
+                return Integer.toString(rank);
             }
         }
 
-        public int rank() {
-            return ordinal() + 1;
-        }
-
         public static Rank getEnum(String value) {
-            String val = value.toUpperCase();
-            return Arrays.stream(values()).filter(rank -> rank.toString().equals(val)).findAny().orElse(null);
+            return Arrays.stream(values()).filter(rank -> rank.toString().equalsIgnoreCase(value)).findAny().orElse(null);
         }
     }
 
@@ -93,15 +96,26 @@ public class Card implements Comparable<Card> {
         this.suit = suit;
     }
 
+    @Override
     public String toString() {
         return rank.toString() + suit.toString();
     }
 
+    @Override
     public int compareTo(Card c) {
         if (suit.compareTo(c.suit) == 0) {
             return rank.compareTo(c.rank);
         } else {
             return suit.compareTo(c.suit);
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Card) {
+            return compareTo((Card)o) == 0;
+        } else {
+            return false;
         }
     }
 }
