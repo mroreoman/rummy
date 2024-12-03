@@ -30,13 +30,13 @@ public class Rummy {
 
         out.println("Dealing cards.");
         List<Card> playerHand = new ArrayList<>(handSize);
-        // List<Card> computerHand = new ArrayList<>(handSize);
+        List<Card> computerHand = new ArrayList<>(handSize);
         for (int i = 0; i < handSize; i++) {
             playerHand.add(stock.remove());
             // computerHand.add(stock.remove());
         }
         player = new Player(playerHand);
-        // computer = new ComputerPlayer(computerHand);
+        computer = new ComputerPlayer(computerHand);
         
         discardPile = new Stack<>();
         melds = new ArrayList<>();
