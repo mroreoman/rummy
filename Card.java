@@ -96,6 +96,14 @@ public class Card implements Comparable<Card> {
         this.suit = suit;
     }
 
+    public Rank getRank() {
+        return rank;
+    }
+
+    public Suit getSuit() {
+        return suit;
+    }
+
     @Override
     public String toString() {
         return rank.toString() + suit.toString();

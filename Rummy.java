@@ -10,19 +10,19 @@ import java.util.Stack;
 public class Rummy {
     private Queue<Card> stock;
     private Stack<Card> discardPile;
-    private List<List<Card>> melds;
+    private List<Meld> melds;
     private Player player;
     private ComputerPlayer computer;
     private Scanner scan;
     private Output out;
-    private int handSize = 10;
+    private int handSize = 7;
 
     public Rummy() {
         out = new Output();
         out.println("Created game of rummy with hand size " + handSize + ".");
     }
 
-    public void start() {
+    public void play() {
         out.println("Shuffling deck.");
         List<Card> deck = Arrays.asList(Card.DECK);
         Collections.shuffle(deck);
@@ -49,6 +49,15 @@ public class Rummy {
         out.println("Starting game.");
         scan = new Scanner(System.in);
         while (turn());
+        out.println("==========================================");
+        if (player.won()) {
+            out.println("you won!!!");
+        } else if (computer.won()) {
+            out.println("the computer won :(");
+        }
+        out.println("Your hand: " + player);
+        out.println("Melds: " + melds);
+        out.println("Top of discard: " + discardPile.peek());
     }
 
     /**
@@ -56,17 +65,14 @@ public class Rummy {
      * @return if the game should continue
      */
     private boolean turn() {
-        out.println("======================================");
+        out.println("==========================================");
         out.println("Your hand: " + player);
+        out.println("Melds: " + melds);
         out.println("Top of discard: " + discardPile.peek());
-        out.print("Melds: ");
-        for (List<Card> meld : melds) {
-            out.print(meld);
-        }
-        out.println();
 
-        boolean repeat = true;
-        while (repeat) {
+        boolean turnDone = false;
+        while (!turnDone) {
+            out.println();
             out.println("1 - Draw from stock");
             out.println("2 - Draw from discard pile");
             out.println("3 - Rearrange hand");
@@ -76,15 +82,14 @@ public class Rummy {
             switch (choice) {
                 case "1":
                     drawCard(stock.remove(), false);
-                    repeat = false;
+                    turnDone = true;
                     break;
                 case "2":
                     drawCard(discardPile.pop(), true);
-                    repeat = false;
+                    turnDone = true;
                     break;
                 case "3":
                     rearrangeHand();
-                    repeat = false;
                     break;
                 default:
                     out.println(Output.error("Invalid choice!"));
@@ -93,11 +98,7 @@ public class Rummy {
             out.outdent();
         }
         
-        if (player.won()) {
-            out.println("You won!!!");
-            return false;
-        } else if (computer.won()) {
-            out.println("The computer won :(");
+        if (player.won() || computer.won()) {
             return false;
         } else {
             return true;
@@ -106,39 +107,50 @@ public class Rummy {
 
     private void drawCard(Card newCard, boolean fromDiscard) {
         player.draw(newCard);
+        out.println();
         if (fromDiscard) {
             out.println("Drew " + newCard + " from discard pile.");
         } else {
             out.println("Drew " + newCard + " from stock.");
         }
-        out.println("Your hand: " + player);
 
         boolean repeat = true;
         while (repeat) {
+            out.println();
+            out.println("Your hand: " + player);
+            out.println("Melds: " + melds);
             out.println("1. Lay down meld");
             out.println("2. Add to meld");
             out.println("3. Rearrange hand");
             out.println("4. Discard card (ends turn)");
+            out.println("5. Discard new card (ends turn)");
             out.print("Enter your choice: ");
             String choice = scan.next();
             out.indent();
             switch (choice) {
                 case "1":
-                    out.println("Laying down meld.");
-                    // input 3-10 cards
-                    // check if valid set/sequence
+                    layMeld();
                     break;
                 case "2":
-                    out.println("Adding to meld.");
-                    // ask which meld they want to add to
-                    // ask which card they want to add (with option to go back)
-                    // check if it would create a valid set/sequence
+                    addToMeld();
                     break;
                 case "3":
                     rearrangeHand();
                     break;
                 case "4":
                     discardCard(fromDiscard);
+                    repeat = false;
+                    break;
+                case "5":
+                    if (fromDiscard) {
+                        out.println(Output.error("You can't return a card after drawing it from the discard pile!"));
+                    } else if (player.handContains(newCard)) {
+                        out.println();
+                        out.println("Discarding " + newCard + ".");
+                        discardPile.push(player.discard(newCard));
+                    } else {
+                        out.println(Output.error("You can't return a card after laying it down!"));
+                    }
                     repeat = false;
                     break;
                 default:
@@ -149,14 +161,121 @@ public class Rummy {
         }
     }
 
-    private void discardCard(boolean fromDiscard) {
-        out.println("Discarding card.");
+    private void layMeld() {
+        out.println();
+        out.println("Selecting cards for meld.");
+        Meld meld = new Meld();
         while (true) {
-            out.print("Enter card (like A\u0005/2\u0006/Js) to discard: ");
-            String cardStr = scan.next();
+            out.print("Enter card (like A\u0005/2\u0006/Js), f to finish the meld, or x to cancel: ");
+            String input = scan.next();
+            if (input.equalsIgnoreCase("x")) {
+                out.println("Cancelling meld.");
+                return;
+            } else if (input.equalsIgnoreCase("f")) {
+                if (meld.isComplete()) {
+                    out.println("Laying " + meld + " on the table.");
+                    player.layCards(meld);
+                    melds.add(meld);
+                    return;
+                } else {
+                    out.println(Output.error("Meld is incomplete!"));
+                    continue;
+                }
+            }
+
             Card card;
             try {
-                card = new Card(cardStr);
+                card = new Card(input);
+            } catch (IllegalArgumentException e) {
+                out.println(Output.error("Invalid card!"));
+                continue;
+            }
+            
+            if (!player.handContains(card)) {
+                out.println(Output.error("Card not in hand!"));
+                continue;
+            }
+
+            if (meld.addCard(card)) {
+                out.println("Meld: " + meld);
+            }
+        }
+    }
+
+    private void addToMeld() {
+        out.println();
+        out.println("Selecting meld to add to.");
+        Meld meld = null;
+        while (meld == null) {
+            out.println("Melds: " + melds);
+            out.print("Enter a card that is in the meld you want to select, or x to cancel: ");
+            String input = scan.next();
+            if (input.equalsIgnoreCase("x")) {
+                out.println("Cancelling addToMeld.");
+                return;
+            }
+
+            Card card;
+            try {
+                card = new Card(input);
+            } catch (IllegalArgumentException e) {
+                out.println(Output.error("Invalid card!"));
+                continue;
+            }
+
+            meld = melds.stream().filter(m -> m.contains(card)).findAny().orElse(null);
+            if (meld == null) {
+                out.println(Output.error("No meld contains that card!"));
+                continue;
+            } else {
+                out.println("Selected meld " + meld);
+            }
+        }
+        
+        out.println("Selecting card to add to meld");
+        while (true) {
+            out.print("Enter card (like A\u0005/2\u0006/Js), or x to cancel: ");
+            String input = scan.next();
+            if (input.equalsIgnoreCase("x")) {
+                out.println("Cancelling addToMeld.");
+                return;
+            }
+
+            Card card;
+            try {
+                card = new Card(input);
+            } catch (IllegalArgumentException e) {
+                out.println(Output.error("Invalid card!"));
+                continue;
+            }
+            
+            if (!player.handContains(card)) {
+                out.println(Output.error("Card not in hand!"));
+                continue;
+            }
+
+            if (meld.addCard(card)) {
+                out.println("Meld: " + meld);
+                player.layCard(card);
+                return;
+            }
+        }
+    }
+
+    private void discardCard(boolean fromDiscard) {
+        out.println();
+        out.println("Selecting card to discard.");
+        while (true) {
+            out.print("Enter card (like A\u0005/2\u0006/Js) to discard, or x to cancel: ");
+            String input = scan.next();
+            if (input.equalsIgnoreCase("x")) {
+                out.println("Cancelling discard.");
+                return;
+            }
+
+            Card card;
+            try {
+                card = new Card(input);
             } catch (IllegalArgumentException e) {
                 out.println(Output.error("Invalid card!"));
                 continue;
@@ -167,8 +286,7 @@ public class Rummy {
                 continue;
             } else if (player.handContains(card)) {
                 out.println("Discarding " + card + ".");
-                player.discard(card);
-                discardPile.push(card);
+                discardPile.push(player.discard(card));
                 return;
             } else {
                 out.println(Output.error("Invalid card!"));
@@ -178,6 +296,7 @@ public class Rummy {
     }
 
     private void rearrangeHand() {
+        out.println();
         out.println("Rearranging hand.");
         player.sortHand();
         out.println("Auto sorted hand.");

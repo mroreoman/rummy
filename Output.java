@@ -14,7 +14,6 @@ public class Output {
     }
 
     public void indent() {
-        println();
         indent++;
     }
 

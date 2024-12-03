@@ -5,7 +5,7 @@ import java.util.List;
 class Client {
     public static void main(String[] args) {
         Rummy game = new Rummy();
-        game.start();
+        game.play();
     }
 
     public static void test() {
@@ -53,11 +53,33 @@ class Client {
         Card c2 = new Card(Card.Rank.JACK, Card.Suit.SPADES);
         Card c3 = new Card(Card.Rank.JACK, Card.Suit.CLUBS);
         Card c4 = new Card(Card.Rank.QUEEN, Card.Suit.CLUBS);
-        System.out.println(!cc.equals(null));
-        System.out.println(cc.equals(c1));
-        System.out.println(c1.equals(c2)); 
-        System.out.println(!c2.equals(c3));
-        System.out.println(!c3.equals(c4));
-        System.out.println(!c4.equals(c1));
+        System.out.print(!cc.equals(null) + " ");
+        System.out.print(cc.equals(c1) + " ");
+        System.out.print(c1.equals(c2) + " ");
+        System.out.print(!c2.equals(c3) + " ");
+        System.out.print(!c3.equals(c4) + " ");
+        System.out.print(!c4.equals(c1) + "\n");
+
+        // melds
+        Meld m = new Meld();
+        String[] cards = new String[]{"As", "Ac", "Ah", "Ad"};
+        for (String s : cards) {
+            m.addCard(new Card(s));
+        }
+        System.out.println("four aces: " + m);
+
+        m = new Meld();
+        cards = new String[]{"As", "2s", "3h", "3s", "Ks", "Js", "Qs", "Js"};
+        for (String s : cards) {
+            m.addCard(new Card(s));
+        }
+        System.out.println("J-3 of spades: " + m);
+
+        m = new Meld();
+        cards = new String[]{"Kd", "Qd", "Ad", "5d"};
+        for (String s : cards) {
+            m.addCard(new Card(s));
+        }
+        System.out.println("Q-A of diamonds: " + m);
     }
 }

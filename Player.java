@@ -25,9 +25,13 @@ public class Player {
         }
     }
 
-    public boolean layCards(List<Card> cards) {
-        if (hand.containsAll(cards)) {
-            hand.removeAll(cards);
+    public boolean layCard(Card c) {
+        return hand.remove(c);
+    }
+
+    public boolean layCards(Meld meld) {
+        if (hand.containsAll(meld.getCards())) {
+            hand.removeAll(meld.getCards());
             return true;
         }
         return false;
