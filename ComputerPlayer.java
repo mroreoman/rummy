@@ -13,4 +13,9 @@ public class ComputerPlayer extends Player {
     // public boolean drawLocation(Card discardCard) { }
 
     // public int cardToDiscard() { }
+
+    @Override
+    public boolean won() {
+        return false; //TODO: remove when implementing computer player
+    }
 }
