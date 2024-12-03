@@ -4,6 +4,7 @@ import java.util.List;
 
 class Client {
     public static void main(String[] args) {
+        Rummy.printInstructions();
         Rummy game = new Rummy();
         game.play();
     }

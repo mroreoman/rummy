@@ -8,7 +8,7 @@ public class ComputerPlayer extends Player {
     /**
      * calculates whether to draw from stock or draw pile
      * @param discardCard - top card of discard pile
-     * @return true if it should draw from the stock
+     * @return {@code true} if it should draw from the stock
      */
     // public boolean drawLocation(Card discardCard) { }
 

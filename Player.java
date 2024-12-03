@@ -25,7 +25,7 @@ public class Player {
         }
     }
 
-    public boolean layCard(Card c) {
+    public boolean layCard(Card c) { // TODO: players can maybe lay their last card, they need to discard that
         return hand.remove(c);
     }
 
@@ -57,7 +57,7 @@ public class Player {
 
     /**
      * checks if a player has won
-     * @return whether they won
+     * @return {@code true} if the player has won
      */
     public boolean won() {
         return hand.isEmpty();
@@ -77,6 +77,7 @@ public class Player {
             } else {
                 s += (first ? "" : " ") + c;
             }
+            first = false;
         }
         return s;
     }

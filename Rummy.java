@@ -15,14 +15,14 @@ public class Rummy {
     private ComputerPlayer computer;
     private Scanner scan;
     private Output out;
-    private int handSize = 7;
+    private int handSize = 10;
+
+    private int turn = 1;
 
     public Rummy() {
         out = new Output();
-        out.println("Created game of rummy with hand size " + handSize + ".");
-    }
+        out.println("Creating game of rummy with hand size " + handSize + ".");
 
-    public void play() {
         out.println("Shuffling deck.");
         List<Card> deck = Arrays.asList(Card.DECK);
         Collections.shuffle(deck);
@@ -45,11 +45,31 @@ public class Rummy {
         // out.println("computer: " + computer);
         // out.println("discard pile: " + discardPile);
         // out.println("stock: " + stock);
+    }
 
+    public static void printInstructions() {
+        System.out.println("Welcome to Rummy!");
+        System.out.println("The goal of the game is to get rid of all of your cards.");
+        System.out.println("You get rid of cards by making melds and placing them on the table, or adding to the melds on the table.");
+        System.out.println("A meld is a group of cards of 3 or more cards that either...");
+        System.out.println("  - all have the same rank (like a 3 or 4 of a kind), or");
+        System.out.println("  - are a sequence within one suit (like a straight flush, except you can wrap around like Q K A 2).");
+        System.out.println("You start each turn by drawing a card from either the stock or the discard pile.");
+        System.out.println("Then you will take any actions you wish to take, such as laying down or adding to a meld.");
+        System.out.println("Finally, you will discard a card to end your turn.");
+        System.out.println("Have fun!");
+        System.out.println();
+    }
+
+    public void play() {
         out.println("Starting game.");
         scan = new Scanner(System.in);
+
         while (turn());
-        out.println("==========================================");
+
+        scan.close();
+
+        out.println("================= Game Done =================");
         if (player.won()) {
             out.println("you won!!!");
         } else if (computer.won()) {
@@ -63,10 +83,11 @@ public class Rummy {
 
     /**
      * play a turn of rummy
-     * @return if the game should continue
+     * @return {@code true} if the game should continue
      */
     private boolean turn() {
-        out.println("==========================================");
+        out.println();
+        out.println("================== " + "Turn " + turn++ + " ==================");
         out.println("Your hand: " + player);
         out.println("Melds: " + melds);
         out.println("Top of discard: " + discardPile.peek());
@@ -79,6 +100,7 @@ public class Rummy {
             out.println("3 - Rearrange hand");
             out.print("Enter your choice: ");
             String choice = scan.next();
+            scan.nextLine();
             out.indent();
             switch (choice) {
                 case "1":
@@ -93,6 +115,7 @@ public class Rummy {
                     rearrangeHand();
                     break;
                 default:
+                    out.println();
                     out.println(Output.error("Invalid choice!"));
                     break;
             }
@@ -113,6 +136,11 @@ public class Rummy {
             out.println("Drew " + newCard + " from discard pile.");
         } else {
             out.println("Drew " + newCard + " from stock.");
+            if (stock.isEmpty()) {
+                stock.addAll(discardPile);
+                discardPile.clear();
+                out.println("Recycling discard pile");
+            }
         }
 
         boolean repeat = true;
@@ -127,6 +155,7 @@ public class Rummy {
             out.println("5. Discard new card (ends turn)");
             out.print("Enter your choice: ");
             String choice = scan.next();
+            scan.nextLine();
             out.indent();
             switch (choice) {
                 case "1":
@@ -169,6 +198,7 @@ public class Rummy {
         while (true) {
             out.print("Enter card (like A\u0005/2\u0006/Js), f to finish the meld, or x to cancel: ");
             String input = scan.next();
+            scan.nextLine();
             if (input.equalsIgnoreCase("x")) {
                 out.println("Cancelling meld.");
                 return;
@@ -211,6 +241,7 @@ public class Rummy {
             out.println("Melds: " + melds);
             out.print("Enter a card that is in the meld you want to select, or x to cancel: ");
             String input = scan.next();
+            scan.nextLine();
             if (input.equalsIgnoreCase("x")) {
                 out.println("Cancelling addToMeld.");
                 return;
@@ -237,6 +268,7 @@ public class Rummy {
         while (true) {
             out.print("Enter card (like A\u0005/2\u0006/Js), or x to cancel: ");
             String input = scan.next();
+            scan.nextLine();
             if (input.equalsIgnoreCase("x")) {
                 out.println("Cancelling addToMeld.");
                 return;
@@ -269,6 +301,7 @@ public class Rummy {
         while (true) {
             out.print("Enter card (like A\u0005/2\u0006/Js) to discard, or x to cancel: ");
             String input = scan.next();
+            scan.nextLine();
             if (input.equalsIgnoreCase("x")) {
                 out.println("Cancelling discard.");
                 return;
@@ -300,6 +333,7 @@ public class Rummy {
         out.println();
         out.println("Rearranging hand.");
         player.sortHand();
-        out.println("Auto sorted hand.");
+        out.println("Sorted hand by suit.");
+        out.println("Your hand: " + player);
     }
 }

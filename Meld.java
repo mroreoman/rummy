@@ -8,14 +8,14 @@ public class Meld {
         cards = new ArrayList<>();
     }
 
-    public boolean addCard(Card newCard) throws IllegalArgumentException {
+    public boolean addCard(Card newCard) {
         if (cards.isEmpty()) {
             cards.add(newCard);
             return true;
         }
 
         if (cards.contains(newCard)) {
-            throw new IllegalArgumentException("Meld already contains " + newCard);
+            return false;
         }
 
         // check for valid set
