@@ -1,8 +1,10 @@
-public class ComputerPlayer extends Player {
-    public ComputerPlayer(int handSize) {
-        super(handSize);
-    }
+import java.util.List;
 
+public class ComputerPlayer extends Player {
+    public ComputerPlayer(List<Card> hand) {
+        super(hand);
+    }
+    
     /**
      * calculates whether to draw from stock or draw pile
      * @param discardCard - top card of discard pile

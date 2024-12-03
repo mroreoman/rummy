@@ -2,10 +2,10 @@ import java.util.Arrays;
 
 public class Card implements Comparable<Card> {
     public enum Suit {
-        SPADES("\u0006", TextColoring.BLUE), //♠
-        CLUBS("\u0005", TextColoring.GREEN), //♣
-        HEARTS("\u0003", TextColoring.RED), //♥
-        DIAMONDS("\u0004", TextColoring.YELLOW); //♦
+        SPADES("\u0006", Output.Colors.BLUE), //♠
+        CLUBS("\u0005", Output.Colors.GREEN), //♣
+        HEARTS("\u0003", Output.Colors.RED), //♥
+        DIAMONDS("\u0004", Output.Colors.YELLOW); //♦
 
         private String symbol;
         private String color;
@@ -17,7 +17,7 @@ public class Card implements Comparable<Card> {
 
         @Override
         public String toString() {
-            return color + symbol + TextColoring.RESET;
+            return color + symbol + Output.Colors.RESET;
         }
 
         public static Suit getEnum(String value) {

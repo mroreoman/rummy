@@ -4,25 +4,33 @@ import java.util.List;
 
 public class Player {
     private List<Card> hand;
-    private boolean autoSort = true;
+    private Card newCard;
 
-    public Player(int handSize) {
-        hand = new ArrayList<>(handSize);
+    public Player(List<Card> hand) {
+        this.hand = new ArrayList<>(hand);
+        sortHand();
     }
 
     public void draw(Card c) {
         hand.add(c);
-        if (autoSort) {
-            sortHand();
-        }
+        newCard = c;
     }
 
     public Card discard(Card c) {
         if (hand.remove(c)) {
+            newCard = null;
             return c;
         } else {
             return null;
         }
+    }
+
+    public boolean layCards(List<Card> cards) {
+        if (hand.containsAll(cards)) {
+            hand.removeAll(cards);
+            return true;
+        }
+        return false;
     }
 
     public void swap(int index1, int index2) {
@@ -35,12 +43,12 @@ public class Player {
         Collections.sort(hand);
     }
 
-    public void setAutoSort(boolean autoSort) {
-        this.autoSort = autoSort;
-    }
-
     public boolean handContains(Card c) {
         return hand.contains(c);
+    }
+
+    public boolean isNewCard(Card c) {
+        return c.equals(newCard);
     }
 
     /**
@@ -55,8 +63,12 @@ public class Player {
     public String toString() {
         String s = "";
         for (Card c : hand) {
-            s += c + " ";
+            if (isNewCard(c)) {
+                s += "(" + c + ") ";
+            } else {
+                s += c + " ";
+            }
         }
-        return s;
+        return s.substring(0, s.length() - 1);
     }
 }

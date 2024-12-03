@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -9,41 +10,43 @@ import java.util.Stack;
 public class Rummy {
     private Queue<Card> stock;
     private Stack<Card> discardPile;
+    private List<List<Card>> melds;
     private Player player;
     private ComputerPlayer computer;
     private Scanner scan;
+    private Output out;
     private int handSize = 10;
 
-    /**
-     * initalizes all objects and deals starting hands
-     */
     public Rummy() {
-        System.out.println("Starting game of rummy with hand size " + handSize + ".");
-        stock = new LinkedList<Card>();
-        discardPile = new Stack<Card>();
-        player = new Player(handSize);
-        computer = new ComputerPlayer(handSize);
+        out = new Output();
+        out.println("Created game of rummy with hand size " + handSize + ".");
     }
 
     public void start() {
-        System.out.println("Shuffling deck.");
+        out.println("Shuffling deck.");
         List<Card> deck = Arrays.asList(Card.DECK);
         Collections.shuffle(deck);
-        stock.addAll(deck);
-        // System.out.println(stock);
+        stock = new LinkedList<>(deck);
 
-        System.out.println("Dealing cards.");
+        out.println("Dealing cards.");
+        List<Card> playerHand = new ArrayList<>(handSize);
+        List<Card> computerHand = new ArrayList<>(handSize);
         for (int i = 0; i < handSize; i++) {
-            player.draw(stock.remove());
-            computer.draw(stock.remove());
+            playerHand.add(stock.remove());
+            computerHand.add(stock.remove());
         }
-        player.sortHand();
-        discardPile.add(stock.remove());
-        // System.out.println("player: " + player);
-        // System.out.println("computer: " + computer);
-        // System.out.println("discard pile: " + discardPile);
+        player = new Player(playerHand);
+        computer = new ComputerPlayer(computerHand);
+        
+        discardPile = new Stack<>();
+        melds = new ArrayList<>();
+        discardPile.push(stock.remove());
+        // out.println("player: " + player);
+        // out.println("computer: " + computer);
+        // out.println("discard pile: " + discardPile);
+        // out.println("stock: " + stock);
 
-        System.out.println("Starting game.");
+        out.println("Starting game.");
         scan = new Scanner(System.in);
         while (turn());
     }
@@ -53,36 +56,48 @@ public class Rummy {
      * @return if the game should continue
      */
     private boolean turn() {
-        System.out.println("\nYour hand: " + player);
-        System.out.println("Top of discard: " + discardPile.peek());
-        //TODO: display melds
-        System.out.println("1 - Draw from stock");
-        System.out.println("2 - Draw from discard pile");
-        System.out.println("3 - Rearrange hand");
-        System.out.print("Enter your choice: ");
-        switch (scan.next()) {
-            case "1":
-                System.out.println("\n\tDrawing card from stock.");
-                drawCard(stock.remove(), false);
-                break;
-            case "2":
-                System.out.println("\n\tDrawing card from discard pile.");
-                drawCard(discardPile.pop(), true);
-                break;
-            case "3":
-                System.out.println("\n\tRearranging hand.");
-                rearrangeHand();
-                return true;
-            default:
-                System.out.println(TextColoring.error("Invalid choice!"));
-                return true;
+        out.println("======================================");
+        out.println("Your hand: " + player);
+        out.println("Top of discard: " + discardPile.peek());
+        out.print("Melds: ");
+        for (List<Card> meld : melds) {
+            out.print(meld);
+        }
+        out.println();
+
+        boolean repeat = true;
+        while (repeat) {
+            out.println("1 - Draw from stock");
+            out.println("2 - Draw from discard pile");
+            out.println("3 - Rearrange hand");
+            out.print("Enter your choice: ");
+            String choice = scan.next();
+            out.indent();
+            switch (choice) {
+                case "1":
+                    drawCard(stock.remove(), false);
+                    repeat = false;
+                    break;
+                case "2":
+                    drawCard(discardPile.pop(), true);
+                    repeat = false;
+                    break;
+                case "3":
+                    rearrangeHand();
+                    repeat = false;
+                    break;
+                default:
+                    out.println(Output.error("Invalid choice!"));
+                    break;
+            }
+            out.outdent();
         }
         
         if (player.won()) {
-            System.out.println("You won!!!");
+            out.println("You won!!!");
             return false;
         } else if (computer.won()) {
-            System.out.println("The computer won :(");
+            out.println("The computer won :(");
             return false;
         } else {
             return true;
@@ -90,49 +105,81 @@ public class Rummy {
     }
 
     private void drawCard(Card newCard, boolean fromDiscard) {
-        System.out.println("\tYour hand: " + player);
-        System.out.println("\tNew card: " + newCard);
+        player.draw(newCard);
+        if (fromDiscard) {
+            out.println("Drew " + newCard + " from discard pile.");
+        } else {
+            out.println("Drew " + newCard + " from stock.");
+        }
+        out.println("Your hand: " + player);
 
-        //TODO: place down meld or add to melds
+        boolean repeat = true;
+        while (repeat) {
+            out.println("1. Lay down meld");
+            out.println("2. Add to meld");
+            out.println("3. Rearrange hand");
+            out.println("4. Discard card (ends turn)");
+            out.print("Enter your choice: ");
+            String choice = scan.next();
+            out.indent();
+            switch (choice) {
+                case "1":
+                    out.println("Laying down meld.");
+                    // input 3-10 cards
+                    // check if valid set/sequence
+                    break;
+                case "2":
+                    out.println("Adding to meld.");
+                    // ask which meld they want to add to
+                    // ask which card they want to add (with option to go back)
+                    // check if it would create a valid set/sequence
+                    break;
+                case "3":
+                    rearrangeHand();
+                    break;
+                case "4":
+                    discardCard(fromDiscard);
+                    repeat = false;
+                    break;
+                default:
+                    out.println(Output.error("Invalid choice!"));
+                    break;
+            }
+            out.outdent();
+        }
+    }
 
+    private void discardCard(boolean fromDiscard) {
+        out.println("Discarding card.");
         while (true) {
-            System.out.print("\tEnter card (like A\u0005/2\u0006/Js) to discard, or r to return new card: ");
+            out.print("Enter card (like A\u0005/2\u0006/Js) to discard: ");
             String cardStr = scan.next();
             Card card;
-            if (cardStr.equalsIgnoreCase("r")) {
-                card = newCard;
-            } else {
-                try {
-                    card = new Card(cardStr);
-                } catch (IllegalArgumentException e) {
-                    System.out.println(TextColoring.error("\tInvalid card!"));
-                    continue;
-                }
+            try {
+                card = new Card(cardStr);
+            } catch (IllegalArgumentException e) {
+                out.println(Output.error("Invalid card!"));
+                continue;
             }
 
-            if (card.equals(newCard)) {
-                if (fromDiscard) {
-                    System.out.println(TextColoring.error("\tYou can't return after drawing from the discard pile!"));
-                    continue;
-                } else {
-                    System.out.println("\tReturning card.");
-                    discardPile.add(newCard);
-                    return;
-                }
+            if (player.isNewCard(card) && fromDiscard) {
+                out.println(Output.error("You can't return a card after drawing it from the discard pile!"));
+                continue;
             } else if (player.handContains(card)) {
-                System.out.println("\tDiscarding " + card + ".");
+                out.println("Discarding " + card + ".");
                 player.discard(card);
-                discardPile.add(card);
-                player.draw(newCard);
+                discardPile.push(card);
                 return;
             } else {
-                System.out.println(TextColoring.error("\tInvalid card!"));
+                out.println(Output.error("Invalid card!"));
                 continue;
             }
         }
     }
 
     private void rearrangeHand() {
+        out.println("Rearranging hand.");
         player.sortHand();
+        out.println("Auto sorted hand.");
     }
 }
