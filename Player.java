@@ -65,14 +65,19 @@ public class Player {
 
     @Override
     public String toString() {
+        if (won()) {
+            return "player has won.";
+        }
+
         String s = "";
+        boolean first = true;
         for (Card c : hand) {
             if (isNewCard(c)) {
-                s += "(" + c + ") ";
+                s += (first ? "" : " ") + "(" + c + ")";
             } else {
-                s += c + " ";
+                s += (first ? "" : " ") + c;
             }
         }
-        return s.substring(0, s.length() - 1);
+        return s;
     }
 }

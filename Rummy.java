@@ -55,8 +55,9 @@ public class Rummy {
         } else if (computer.won()) {
             out.println("the computer won :(");
         }
-        out.println("Your hand: " + player);
         out.println("Melds: " + melds);
+        out.println("Your hand: " + player);
+        out.println("Computer's hand: " + computer);
         out.println("Top of discard: " + discardPile.peek());
     }
 
