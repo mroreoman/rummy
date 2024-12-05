@@ -1,11 +1,12 @@
 import java.util.Arrays;
+import java.util.Comparator;
 
-public class Card implements Comparable<Card> {
+public class Card {
     public enum Suit {
-        SPADES("\u0006", Output.Colors.BLUE), //♠
-        CLUBS("\u0005", Output.Colors.GREEN), //♣
-        HEARTS("\u0003", Output.Colors.RED), //♥
-        DIAMONDS("\u0004", Output.Colors.YELLOW); //♦
+        SPADES("\u0006", Colors.BLUE), //♠
+        CLUBS("\u0005", Colors.GREEN), //♣
+        HEARTS("\u0003", Colors.RED), //♥
+        DIAMONDS("\u0004", Colors.YELLOW); //♦
 
         private String symbol;
         private String color;
@@ -17,7 +18,7 @@ public class Card implements Comparable<Card> {
 
         @Override
         public String toString() {
-            return color + symbol + Output.Colors.RESET;
+            return color + symbol + Colors.RESET;
         }
 
         public static Suit getEnum(String value) {
@@ -63,6 +64,29 @@ public class Card implements Comparable<Card> {
             return Arrays.stream(values()).filter(rank -> rank.toString().equalsIgnoreCase(value)).findAny().orElse(null);
         }
     }
+
+    public static final class RankComparator implements Comparator<Card> {
+        @Override
+        public int compare(Card c1, Card c2) {
+            if (c1.rank.compareTo(c2.rank) != 0) {
+                return c1.rank.compareTo(c2.rank);
+            } else {
+                return c1.suit.compareTo(c2.suit);
+            }
+        }
+    }
+    
+    public static final class SuitComparator implements Comparator<Card> {
+        @Override
+        public int compare(Card c1, Card c2) {
+            if (c1.suit.compareTo(c2.suit) != 0) {
+                return c1.suit.compareTo(c2.suit);
+            } else {
+                return c1.rank.compareTo(c2.rank);
+            }
+        }
+    }
+
 
     public static final Card[] DECK = new Card[52];
     
@@ -110,20 +134,17 @@ public class Card implements Comparable<Card> {
     }
 
     @Override
-    public int compareTo(Card c) {
-        if (suit.compareTo(c.suit) == 0) {
-            return rank.compareTo(c.rank);
-        } else {
-            return suit.compareTo(c.suit);
-        }
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (o instanceof Card) {
-            return compareTo((Card)o) == 0;
+            Card c = (Card)o;
+            return this.rank == c.rank && this.suit == c.suit;
         } else {
             return false;
         }
+        // if (o instanceof Card) {
+        //     return compareTo((Card)o) == 0;
+        // } else {
+        //     return false;
+        // }
     }
 }

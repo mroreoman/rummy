@@ -7,15 +7,20 @@ class Client {
         Rummy.printInstructions();
         Rummy game = new Rummy();
         game.play();
+
+        // test();
     }
 
     public static void test() {
-        // Card.toString()
-        System.out.print("full deck: ");
-        for (Card c : Card.DECK) {
-            System.out.print(c + " ");
-        }
-        System.out.println();
+        // Card.RankComparator and Card.SuitComparator
+        List<Card> deck = Arrays.asList(Card.DECK);
+        System.out.println("full deck:\n" + deck);
+        Collections.shuffle(deck);
+        System.out.println("shuffled deck:\n" + deck);
+        deck.sort(new Card.SuitComparator());
+        System.out.println("sorted by suit:\n" + deck);
+        deck.sort(new Card.RankComparator());
+        System.out.println("sorted by rank:\n" + deck);
 
         // new Card(String cardStr)
         System.out.print("jacks of spades: ");
@@ -36,16 +41,6 @@ class Client {
             c = new Card("uS");
         } catch (IllegalArgumentException e) {
             System.out.println("invalid rank: " + e);
-        }
-
-        // card.compareTo()
-        List<Card> deck = Arrays.asList(Card.DECK);
-        Collections.shuffle(deck);
-        Collections.sort(deck);
-        if (deck.toString().equals(Arrays.toString(Card.DECK))) {
-            System.out.println("sorted succesfully!");
-        } else {
-            System.out.println("sort didn't work. deck: " + deck);
         }
         
         // Card.equals()

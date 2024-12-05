@@ -1,32 +1,33 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Player {
     private List<Card> hand;
-    private Card newCard;
 
     public Player(List<Card> hand) {
         this.hand = new ArrayList<>(hand);
-        sortHand();
     }
 
     public void draw(Card c) {
         hand.add(c);
-        newCard = c;
     }
 
     public Card discard(Card c) {
         if (hand.remove(c)) {
-            newCard = null;
             return c;
         } else {
             return null;
         }
     }
 
-    public boolean layCard(Card c) { // TODO: players can maybe lay their last card, they need to discard that
-        return hand.remove(c);
+    public void layCard(Card c) { // TODO: players can maybe lay their last card, they need to discard that
+        if (hand.size() < 2) {
+            throw new IllegalStateException("Player attempting to lay their last card.");
+        }
+
+        if (hand.remove(c)) {
+            throw new IllegalStateException("Player attempting to lay a card they don't have.");
+        }
     }
 
     public boolean layCards(Meld meld) {
@@ -43,16 +44,16 @@ public class Player {
         hand.add(index2, c);
     }
 
-    public void sortHand() {
-        Collections.sort(hand);
+    public void sortBySuit() {
+        hand.sort(new Card.SuitComparator());
+    }
+
+    public void sortByRank() {
+        hand.sort(new Card.RankComparator());
     }
 
     public boolean handContains(Card c) {
         return hand.contains(c);
-    }
-
-    public boolean isNewCard(Card c) {
-        return c.equals(newCard);
     }
 
     /**
@@ -72,11 +73,7 @@ public class Player {
         String s = "";
         boolean first = true;
         for (Card c : hand) {
-            if (isNewCard(c)) {
-                s += (first ? "" : " ") + "(" + c + ")";
-            } else {
-                s += (first ? "" : " ") + c;
-            }
+            s += (first ? "" : " ") + c;
             first = false;
         }
         return s;
