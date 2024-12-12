@@ -88,43 +88,15 @@ public class Rummy {
     private boolean turn() {
         out.println();
         out.println("================== " + "Turn " + turn++ + " ==================");
-        out.println("Your hand: " + player);
-        out.println("Melds: " + melds);
-        out.println("Top of discard: " + discardPile.peek());
+        
+        Card drawn;
+        do {
+            drawn = drawMenu();
+        } while (drawn == null);
 
-        boolean turnDone = false;
-        while (!turnDone) {
-            out.println();
-            out.println("1 - Draw from stock");
-            out.println("2 - Draw from discard pile");
-            out.println("3 - Sort hand by rank");
-            out.println("4 - Sort hand by suit");
-            out.print("Enter your choice: ");
-            String choice = scan.next();
-            scan.nextLine();
-            out.indent();
-            switch (choice) {
-                case "1":
-                    drawCard(stock.remove(), false);
-                    turnDone = true;
-                    break;
-                case "2":
-                    drawCard(discardPile.pop(), true);
-                    turnDone = true;
-                    break;
-                case "3":
-                    player.sortByRank();
-                    break;
-                case "4":
-                    player.sortBySuit();
-                    break;
-                default:
-                    out.println();
-                    out.println(Output.error("Invalid choice!"));
-                    break;
-            }
-            out.outdent();
-        }
+        out.indent();
+        while (!discardMenu(drawn));
+        out.outdent();
         
         if (player.won() || computer.won()) {
             return false;
@@ -133,70 +105,125 @@ public class Rummy {
         }
     }
 
-    private void drawCard(Card newCard, boolean fromDiscard) {
-        player.draw(newCard);
+    // returns null if player did not draw a card
+    private Card drawMenu() {
         out.println();
-        if (fromDiscard) {
-            out.println("Drew " + newCard + " from discard pile.");
-        } else {
-            out.println("Drew " + newCard + " from stock.");
-            if (stock.isEmpty()) {
-                stock.addAll(discardPile);
-                discardPile.clear();
-                out.println("Recycling discard pile");
-            }
+        out.println("Your hand: " + player);
+        out.println("Melds: " + melds);
+        out.println("Top of discard: " + discardPile.peek());
+        out.println();
+        out.println("1 - Draw from stock");
+        out.println("2 - Draw from discard pile");
+        out.println("3 - Sort hand by rank");
+        out.println("4 - Sort hand by suit");
+        out.print("Enter your choice: ");
+        String choice = scan.next();
+        scan.nextLine();
+        out.indent();
+        Card drawnCard = null;
+        switch (choice) {
+            case "1":
+                drawnCard = stock.remove();
+                player.draw(drawnCard);
+                out.println();
+                out.println("Drew " + drawnCard + " from stock.");
+                if (stock.isEmpty()) {
+                    stock.addAll(discardPile);
+                    discardPile.clear();
+                   out.println("Recycled discard pile");
+                }
+                break;
+            case "2":
+                drawnCard = discardPile.pop();
+                player.draw(drawnCard);
+                out.println();
+                out.println("Drew " + drawnCard + " from discard pile.");
+                break;
+            case "3":
+                player.sortByRank();
+                out.println("\n\tSorted hand by rank.");
+                break;
+            case "4":
+                player.sortBySuit();
+                out.println("\n\tSorted hand by suit.");
+                break;
+            default:
+                out.println();
+                out.println(Output.error("Invalid choice!"));
+                break;
         }
+        out.outdent();
+        return drawnCard;
+    }
 
-        boolean repeat = true;
-        while (repeat) {
-            out.println();
-            out.println("Your hand: " + player);
-            out.println("Melds: " + melds);
-            out.println("1 - Lay down meld");
-            out.println("2 - Add to meld");
-            out.println("3 - Sort hand by rank");
-            out.println("4 - Sort hand by suit");
-            out.println("5 - Discard card (ends turn)");
-            out.println("6 - Discard new card (ends turn)");
-            out.print("Enter your choice: ");
-            String choice = scan.next();
-            scan.nextLine();
-            out.indent();
-            switch (choice) {
-                case "1":
-                    layMeld();
+    // returns true if player discarded a card and turn should end
+    private boolean discardMenu(Card drawnCard) {
+        out.println();
+        out.println("Your hand: " + player);
+        out.println("Melds: " + melds);
+        out.println("Drawn card: " + drawnCard);
+        out.println();
+        out.println("1 - Lay down meld");
+        out.println("2 - Add to meld");
+        out.println("3 - Sort hand by rank");
+        out.println("4 - Sort hand by suit");
+        out.println("5 - Choose card to discard (ends turn)");
+        out.println("6 - Discard drawn card (ends turn)");
+        out.print("Enter your choice: ");
+        String choice = scan.next();
+        scan.nextLine();
+        out.indent();
+        Card toDiscard = null;
+        switch (choice) {
+            case "1":
+                layMeld();
+                break;
+            case "2":
+                addToMeld();
+                break;
+            case "3":
+                player.sortByRank();
+                break;
+            case "4":
+                player.sortBySuit();
+                break;
+            case "5":
+                out.println();
+                out.print("Enter card (like A\u0005 or As) to discard, or x to cancel: ");
+                String input = scan.next();
+                scan.nextLine();
+                if (input.equalsIgnoreCase("x")) {
+                    out.println("Cancelling discard.");
                     break;
-                case "2":
-                    addToMeld();
-                    break;
-                case "3":
-                    player.sortByRank();
-                    break;
-                case "4":
-                    player.sortBySuit();
-                    break;
-                case "5":
-                    discardCard(fromDiscard);
-                    repeat = false;
-                    break;
-                case "6":
-                    if (fromDiscard) {
-                        out.println(Output.error("You can't return a card after drawing it from the discard pile!"));
-                    } else if (player.handContains(newCard)) {
-                        out.println();
-                        out.println("Discarding " + newCard + ".");
-                        discardPile.push(player.discard(newCard));
-                    } else {
-                        out.println(Output.error("You can't return a card after laying it down!"));
-                    }
-                    repeat = false;
-                    break;
-                default:
-                    out.println(Output.error("Invalid choice!"));
-                    break;
-            }
-            out.outdent();
+                }
+                try {
+                    toDiscard = selectCardFromHand(input);
+                } catch (IllegalArgumentException e) {
+                    out.println(Output.error(e.getMessage()));
+                } catch (IllegalStateException e) {
+                    out.println(Output.error(e.getMessage()));
+                }
+                break;
+            case "6":
+                if (player.handContains(drawnCard)) {
+                    toDiscard = drawnCard;
+                } else {
+                    out.println();
+                    out.println(Output.error("You can't discard a card after laying it down!"));
+                }
+                break;
+            default:
+                out.println(Output.error("Invalid choice!"));
+                break;
         }
+        out.outdent();
+        if (toDiscard != null) {
+            discardPile.push(player.discard(toDiscard));
+            out.println();
+            out.println("Discarded " + toDiscard + ".");
+            return true;
+        }
+        return false;
     }
 
     private void layMeld() {
@@ -241,6 +268,7 @@ public class Rummy {
         }
     }
 
+    //TODO: make this nicer
     private void addToMeld() {
         out.println();
         out.println("Selecting meld to add to.");
@@ -303,37 +331,18 @@ public class Rummy {
         }
     }
 
-    private void discardCard(boolean fromDiscard) {
-        out.println();
-        out.println("Selecting card to discard.");
-        while (true) {
-            out.print("Enter card (like A\u0005/2\u0006/Js) to discard, or x to cancel: ");
-            String input = scan.next();
-            scan.nextLine();
-            if (input.equalsIgnoreCase("x")) {
-                out.println("Cancelling discard.");
-                return;
-            }
-
-            Card card;
-            try {
-                card = new Card(input);
-            } catch (IllegalArgumentException e) {
-                out.println(Output.error("Invalid card!"));
-                continue;
-            }
-
-            if (player.isNewCard(card) && fromDiscard) {
-                out.println(Output.error("You can't return a card after drawing it from the discard pile!"));
-                continue;
-            } else if (player.handContains(card)) {
-                out.println("Discarding " + card + ".");
-                discardPile.push(player.discard(card));
-                return;
-            } else {
-                out.println(Output.error("Invalid card!"));
-                continue;
-            }
+    private Card selectCardFromHand(String cardStr) {
+        Card card;
+        try {
+            card = new Card(cardStr);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid card!");
+        }
+        if (player.handContains(card)) {
+            out.println("Selected " + card);
+            return card;
+        } else {
+            throw new IllegalStateException("Card not in hand!");
         }
     }
 }

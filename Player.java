@@ -3,7 +3,6 @@ import java.util.List;
 
 public class Player {
     private List<Card> hand;
-    private Card newCard;
 
     public Player(List<Card> hand) {
         this.hand = new ArrayList<>(hand);
@@ -11,12 +10,10 @@ public class Player {
 
     public void draw(Card c) {
         hand.add(c);
-        newCard = c;
     }
 
     public Card discard(Card c) {
         if (hand.remove(c)) {
-            newCard = null;
             return c;
         } else {
             return null;
@@ -53,10 +50,6 @@ public class Player {
         return hand.contains(c);
     }
 
-    public boolean isNewCard(Card c) {
-        return c.equals(newCard);
-    }
-
     /**
      * checks if a player has won
      * @return {@code true} if the player has won
@@ -74,11 +67,7 @@ public class Player {
         String s = "";
         boolean first = true;
         for (Card c : hand) {
-            if (isNewCard(c)) {
-                s += (first ? "" : " ") + "(" + c + ")";
-            } else {
-                s += (first ? "" : " ") + c;
-            }
+            s += (first ? "" : " ") + c;
             first = false;
         }
         return s;
