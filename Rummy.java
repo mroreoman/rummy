@@ -33,7 +33,7 @@ public class Rummy {
         List<Card> computerHand = new ArrayList<>(handSize);
         for (int i = 0; i < handSize; i++) {
             playerHand.add(stock.remove());
-            // computerHand.add(stock.remove());
+            // computerHand.add(stock.remove()); TODO: put back when implementing computer player
         }
         player = new Player(playerHand);
         computer = new ComputerPlayer(computerHand);
@@ -97,7 +97,8 @@ public class Rummy {
             out.println();
             out.println("1 - Draw from stock");
             out.println("2 - Draw from discard pile");
-            out.println("3 - Rearrange hand");
+            out.println("3 - Sort hand by rank");
+            out.println("4 - Sort hand by suit");
             out.print("Enter your choice: ");
             String choice = scan.next();
             scan.nextLine();
@@ -112,7 +113,10 @@ public class Rummy {
                     turnDone = true;
                     break;
                 case "3":
-                    rearrangeHand();
+                    player.sortByRank();
+                    break;
+                case "4":
+                    player.sortBySuit();
                     break;
                 default:
                     out.println();
@@ -148,11 +152,12 @@ public class Rummy {
             out.println();
             out.println("Your hand: " + player);
             out.println("Melds: " + melds);
-            out.println("1. Lay down meld");
-            out.println("2. Add to meld");
-            out.println("3. Rearrange hand");
-            out.println("4. Discard card (ends turn)");
-            out.println("5. Discard new card (ends turn)");
+            out.println("1 - Lay down meld");
+            out.println("2 - Add to meld");
+            out.println("3 - Sort hand by rank");
+            out.println("4 - Sort hand by suit");
+            out.println("5 - Discard card (ends turn)");
+            out.println("6 - Discard new card (ends turn)");
             out.print("Enter your choice: ");
             String choice = scan.next();
             scan.nextLine();
@@ -165,13 +170,16 @@ public class Rummy {
                     addToMeld();
                     break;
                 case "3":
-                    rearrangeHand();
+                    player.sortByRank();
                     break;
                 case "4":
+                    player.sortBySuit();
+                    break;
+                case "5":
                     discardCard(fromDiscard);
                     repeat = false;
                     break;
-                case "5":
+                case "6":
                     if (fromDiscard) {
                         out.println(Output.error("You can't return a card after drawing it from the discard pile!"));
                     } else if (player.handContains(newCard)) {
@@ -327,13 +335,5 @@ public class Rummy {
                 continue;
             }
         }
-    }
-
-    private void rearrangeHand() {
-        out.println();
-        out.println("Rearranging hand.");
-        player.sortHand();
-        out.println("Sorted hand by suit.");
-        out.println("Your hand: " + player);
     }
 }

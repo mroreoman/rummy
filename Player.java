@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Player {
@@ -8,7 +7,6 @@ public class Player {
 
     public Player(List<Card> hand) {
         this.hand = new ArrayList<>(hand);
-        sortHand();
     }
 
     public void draw(Card c) {
@@ -29,7 +27,7 @@ public class Player {
         return hand.remove(c);
     }
 
-    public boolean layCards(Meld meld) {
+    public boolean layCards(Meld meld) { // TODO: make sure players can't lay all their cards
         if (hand.containsAll(meld.getCards())) {
             hand.removeAll(meld.getCards());
             return true;
@@ -43,8 +41,12 @@ public class Player {
         hand.add(index2, c);
     }
 
-    public void sortHand() {
-        Collections.sort(hand);
+    public void sortBySuit() {
+        hand.sort(new Card.SuitComparator());
+    }
+
+    public void sortByRank() {
+        hand.sort(new Card.RankComparator());
     }
 
     public boolean handContains(Card c) {

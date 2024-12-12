@@ -38,15 +38,15 @@ class Client {
             System.out.println("invalid rank: " + e);
         }
 
-        // card.compareTo()
+        // Card.RankComparator and Card.SuitComparator
         List<Card> deck = Arrays.asList(Card.DECK);
+        System.out.println("full deck:\n" + deck);
         Collections.shuffle(deck);
-        Collections.sort(deck);
-        if (deck.toString().equals(Arrays.toString(Card.DECK))) {
-            System.out.println("sorted succesfully!");
-        } else {
-            System.out.println("sort didn't work. deck: " + deck);
-        }
+        System.out.println("shuffled deck:\n" + deck);
+        deck.sort(new Card.SuitComparator());
+        System.out.println("sorted by suit:\n" + deck);
+        deck.sort(new Card.RankComparator());
+        System.out.println("sorted by rank:\n" + deck);
         
         // Card.equals()
         Card cc = new Card("Js");
