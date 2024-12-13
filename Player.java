@@ -27,7 +27,7 @@ public class Player {
         return hand.removeFirst();
     }
 
-    public void layCard(Card c) { // TODO: players can maybe lay their last card, they need to discard that
+    public void layCard(Card c) {
         if (hand.size() <= 1) {
             throw new IllegalStateException("Player attempting to lay their last card.");
         }
@@ -36,7 +36,7 @@ public class Player {
         }
     }
 
-    public void layCards(Meld meld) { // TODO: make sure players can't lay all their cards
+    public void layCards(Meld meld) {
         if (!hand.containsAll(meld.getCards())) {
             throw new IllegalStateException("Player attempting to lay cards they don't have.");
         }
