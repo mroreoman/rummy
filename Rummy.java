@@ -180,11 +180,8 @@ public class Rummy {
             scan.nextLine();
             out.indent();
             switch (choice) {
-                case "1":
-                    toDiscard = player.discard();
-                    break;
                 default:
-                    out.println(Output.error("Invalid choice!"));
+                    toDiscard = player.getLastCard();
                     break;
             }
         } else {
@@ -244,6 +241,7 @@ public class Rummy {
         if (toDiscard != null) {
             discardPile.push(player.discard(toDiscard));
             out.println("Discarded " + toDiscard + ".");
+            out.outdent();
             return true;
         }
         out.outdent();
@@ -415,6 +413,6 @@ public class Rummy {
         Card toDiscard = computer.cardToDiscard();
         discardPile.push(computer.discard(toDiscard));
         out.println("Computer discarded " + toDiscard + ".");
-        out.println("Computer has " + computer.numCards() + " left.");
+        out.println("Computer has " + computer.numCards() + " cards left.");
     }
 }

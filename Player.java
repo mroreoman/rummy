@@ -20,11 +20,11 @@ public class Player {
         }
     }
 
-    public Card discard() {
+    public Card getLastCard() {
         if (hand.size() != 1) {
             throw new IllegalStateException("This method should only be used for the last card.");
         }
-        return hand.removeFirst();
+        return hand.getLast();
     }
 
     public void layCard(Card c) {
