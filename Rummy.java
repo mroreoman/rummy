@@ -41,11 +41,6 @@ public class Rummy {
         discardPile = new Stack<>();
         melds = new ArrayList<>();
         discardPile.push(stock.remove());
-        //FIXME remove after testing
-        out.println("player: " + player);
-        out.println("computer: " + computer);
-        out.println("discard pile: " + discardPile);
-        out.println("stock: " + stock);
     }
 
     public static void printInstructions() {
