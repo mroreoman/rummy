@@ -34,6 +34,7 @@ public class Player {
         if (!hand.remove(c)) {
             throw new IllegalStateException("Player attempting to lay a card they don't have.");
         }
+        hand.remove(c);
     }
 
     public void layCards(Meld meld) {

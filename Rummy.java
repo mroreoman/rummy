@@ -33,7 +33,7 @@ public class Rummy {
         List<Card> computerHand = new ArrayList<>(handSize);
         for (int i = 0; i < handSize; i++) {
             playerHand.add(stock.remove());
-            // computerHand.add(stock.remove()); TODO: put back when implementing computer player
+            computerHand.add(stock.remove());
         }
         player = new Player(playerHand);
         computer = new ComputerPlayer(computerHand);
@@ -41,15 +41,20 @@ public class Rummy {
         discardPile = new Stack<>();
         melds = new ArrayList<>();
         discardPile.push(stock.remove());
+        //FIXME remove after testing
+        out.println("player: " + player);
+        out.println("computer: " + computer);
+        out.println("discard pile: " + discardPile);
+        out.println("stock: " + stock);
     }
 
     public static void printInstructions() {
         System.out.println("Welcome to Rummy!");
         System.out.println("The goal of the game is to get rid of all of your cards.");
         System.out.println("You get rid of cards by making melds and placing them on the table, or adding to the melds on the table.");
-        System.out.println("A meld is a group of cards of 3 or more cards that either...");
-        System.out.println("  - all have the same rank (like a 3 or 4 of a kind), or");
-        System.out.println("  - are a sequence within one suit (like a straight flush, except you can wrap around like Q K A 2).");
+        System.out.println("A meld is a group of cards of 3 or more cards that makes a set or run.");
+        System.out.println("Set - cards have the same rank like " + Meld.SET);
+        System.out.println("Run - cards are in order in the same suit like " + Meld.RUN);
         System.out.println("You start each turn by drawing a card from either the stock or the discard pile.");
         System.out.println("Then you will take any actions you wish to take, such as laying down or adding to a meld.");
         System.out.println("Finally, you will discard a card to end your turn.");
@@ -94,11 +99,16 @@ public class Rummy {
         while (!discardMenu(drawn));
         out.outdent();
         
-        if (player.won() || computer.won()) {
+        if (player.won()) {
             return false;
-        } else {
-            return true;
         }
+
+        computerTurn();
+        if (computer.won()) {
+            return false;
+        }
+
+        return true;
     }
 
     // returns null if player did not draw a card
@@ -365,5 +375,47 @@ public class Rummy {
         } else {
             throw new IllegalStateException("Card not in hand!");
         }
+    }
+
+    private void computerTurn() {
+        // draw
+        out.println();
+        if (computer.drawFromDiscard(discardPile.peek())) {
+            Card drawnCard = discardPile.pop();
+            computer.draw(drawnCard);
+            out.println("Computer drew " + drawnCard + " from discard pile.");
+        } else {
+            Card drawnCard = stock.remove();
+            computer.draw(drawnCard);
+            out.println("Computer drew " + drawnCard + " from stock.");
+            if (stock.isEmpty()) {
+                stock.addAll(discardPile);
+                discardPile.clear();
+                out.println("Recycled discard pile");
+            }
+        }
+
+        // try to make own melds
+        List<Meld> laidMelds = computer.layMelds();
+        for (Meld m : laidMelds) {
+            melds.add(m);
+            out.println();
+            out.println("Computer laid " + m + ".");
+        }
+
+        // check melds and try to add to all
+        for (Meld m : melds) {
+            for (Card c : computer.addToMeld(m.getCards())) {
+                m.addCard(c);
+                out.println();
+                out.println("Computer added " + c + " to " + m);
+            }
+        }
+        
+        // discard
+        Card toDiscard = computer.cardToDiscard();
+        discardPile.push(computer.discard(toDiscard));
+        out.println();
+        out.println("Computer discarded " + toDiscard + ".");
     }
 }
