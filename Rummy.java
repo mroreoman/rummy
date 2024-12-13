@@ -15,7 +15,7 @@ public class Rummy {
     private ComputerPlayer computer;
     private Scanner scan;
     private Output out;
-    private int handSize = 10;
+    private int handSize = 7;
 
     private int turn = 1;
 
@@ -23,12 +23,11 @@ public class Rummy {
         out = new Output();
         out.println("Creating game of rummy with hand size " + handSize + ".");
 
-        out.println("Shuffling deck.");
         List<Card> deck = Arrays.asList(Card.DECK);
         Collections.shuffle(deck);
         stock = new LinkedList<>(deck);
+        out.println("Shuffled deck.");
 
-        out.println("Dealing cards.");
         List<Card> playerHand = new ArrayList<>(handSize);
         List<Card> computerHand = new ArrayList<>(handSize);
         for (int i = 0; i < handSize; i++) {
@@ -37,10 +36,16 @@ public class Rummy {
         }
         player = new Player(playerHand);
         computer = new ComputerPlayer(computerHand);
+        out.println("Dealt cards.");
         
         discardPile = new Stack<>();
         melds = new ArrayList<>();
         discardPile.push(stock.remove());
+        
+        // out.println("player: " + player);
+        // out.println("computer: " + computer);
+        // out.println("discard pile: " + discardPile);
+        // out.println("stock: " + stock);
     }
 
     public static void printInstructions() {
@@ -65,7 +70,9 @@ public class Rummy {
 
         scan.close();
 
+        out.println();
         out.println("================= Game Done =================");
+        out.println();
         if (player.won()) {
             out.println("you won!!!");
         } else if (computer.won()) {
@@ -234,13 +241,12 @@ public class Rummy {
                     break;
             }
         }
-        out.outdent();
         if (toDiscard != null) {
             discardPile.push(player.discard(toDiscard));
-            out.println();
             out.println("Discarded " + toDiscard + ".");
             return true;
         }
+        out.outdent();
         return false;
     }
 
@@ -249,6 +255,7 @@ public class Rummy {
         out.println("Selecting cards for meld.");
         Meld meld = new Meld();
         while (true) {
+            out.println();
             out.println("Meld: " + meld);
             out.print("Enter card (like A\u0006 or As), f to finish the meld, or x to cancel: ");
             String input = scan.next();
@@ -258,9 +265,9 @@ public class Rummy {
                 return;
             } else if (input.equalsIgnoreCase("f")) {
                 if (meld.isComplete()) {
-                    out.println("Laying " + meld + " on the table.");
                     player.layCards(meld);
                     melds.add(meld);
+                    out.println("Laid " + meld + " on the table.");
                     return;
                 } else {
                     out.println(Output.error("Meld is incomplete!"));
@@ -365,7 +372,6 @@ public class Rummy {
             throw new IllegalArgumentException("Invalid card!");
         }
         if (player.handContains(card)) {
-            out.println("Selected " + card);
             return card;
         } else {
             throw new IllegalStateException("Card not in hand!");
@@ -394,7 +400,6 @@ public class Rummy {
         List<Meld> laidMelds = computer.layMelds();
         for (Meld m : laidMelds) {
             melds.add(m);
-            out.println();
             out.println("Computer laid " + m + ".");
         }
 
@@ -402,7 +407,6 @@ public class Rummy {
         for (Meld m : melds) {
             for (Card c : computer.addToMeld(m.getCards())) {
                 m.addCard(c);
-                out.println();
                 out.println("Computer added " + c + " to " + m);
             }
         }
@@ -410,7 +414,7 @@ public class Rummy {
         // discard
         Card toDiscard = computer.cardToDiscard();
         discardPile.push(computer.discard(toDiscard));
-        out.println();
         out.println("Computer discarded " + toDiscard + ".");
+        out.println("Computer has " + computer.numCards() + " left.");
     }
 }

@@ -96,6 +96,10 @@ public class ComputerPlayer {
         return hand.isEmpty();
     }
 
+    public int numCards() {
+        return hand.size();
+    }
+
     @Override
     public String toString() {
         if (won()) {
