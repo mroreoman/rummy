@@ -41,10 +41,6 @@ public class Rummy {
         discardPile = new Stack<>();
         melds = new ArrayList<>();
         discardPile.push(stock.remove());
-        // out.println("player: " + player);
-        // out.println("computer: " + computer);
-        // out.println("discard pile: " + discardPile);
-        // out.println("stock: " + stock);
     }
 
     public static void printInstructions() {
@@ -163,6 +159,21 @@ public class Rummy {
         out.println("Melds: " + melds);
         out.println("Drawn card: " + drawnCard);
         out.println();
+        if (player.handSize() == 1) {
+            out.println("1. Discard your last card (and win the game)");
+            out.print("Enter your choice: ");
+            String choice = scan.next();
+            scan.nextLine();
+            out.indent();
+            switch (choice) {
+                case "1":
+                    player.discard();
+                    break;
+                default:
+                    out.println(Output.error("Invalid choice!"));
+                    break;
+            }
+        }
         out.println("1 - Lay down meld");
         out.println("2 - Add to meld");
         out.println("3 - Sort hand by rank");
@@ -189,7 +200,7 @@ public class Rummy {
                 break;
             case "5":
                 out.println();
-                out.print("Enter card (like A\u0005 or As) to discard, or x to cancel: ");
+                out.print("Enter card (like A\u0006 or As) to discard, or x to cancel: ");
                 String input = scan.next();
                 scan.nextLine();
                 if (input.equalsIgnoreCase("x")) {
@@ -231,14 +242,17 @@ public class Rummy {
         out.println("Selecting cards for meld.");
         Meld meld = new Meld();
         while (true) {
-            out.print("Enter card (like A\u0005/2\u0006/Js), f to finish the meld, or x to cancel: ");
+            out.print("Enter card (like A\u0006 or As), f to finish the meld, or x to cancel: ");
             String input = scan.next();
             scan.nextLine();
             if (input.equalsIgnoreCase("x")) {
                 out.println("Cancelling meld.");
                 return;
             } else if (input.equalsIgnoreCase("f")) {
-                if (meld.isComplete()) {
+                if (player.handSize() <= meld.getCards().size()) {
+                    out.println(Output.error("Your last card must be discarded!"));
+                    continue;
+                } else if (meld.isComplete()) {
                     out.println("Laying " + meld + " on the table.");
                     player.layCards(meld);
                     melds.add(meld);
@@ -264,6 +278,8 @@ public class Rummy {
 
             if (meld.addCard(card)) {
                 out.println("Meld: " + meld);
+            } else {
+                out.println(Output.error("Card doesn't fit in meld!"));
             }
         }
     }
@@ -302,7 +318,7 @@ public class Rummy {
         
         out.println("Selecting card to add to meld");
         while (true) {
-            out.print("Enter card (like A\u0005/2\u0006/Js), or x to cancel: ");
+            out.print("Enter card (like A\u0006 or As), or x to cancel: ");
             String input = scan.next();
             scan.nextLine();
             if (input.equalsIgnoreCase("x")) {

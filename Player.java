@@ -20,22 +20,30 @@ public class Player {
         }
     }
 
-    public boolean layCard(Card c) { // TODO: players can maybe lay their last card, they need to discard that
-        return hand.remove(c);
-    }
-
-    public boolean layCards(Meld meld) { // TODO: make sure players can't lay all their cards
-        if (hand.containsAll(meld.getCards())) {
-            hand.removeAll(meld.getCards());
-            return true;
+    public Card discard() {
+        if (hand.size() != 1) {
+            throw new IllegalStateException("This method should only be used for the last card.");
         }
-        return false;
+        return hand.removeFirst();
     }
 
-    public void swap(int index1, int index2) {
-        Card c = hand.remove(index1);
-        hand.add(index1, hand.remove(index2));
-        hand.add(index2, c);
+    public void layCard(Card c) { // TODO: players can maybe lay their last card, they need to discard that
+        if (hand.size() <= 1) {
+            throw new IllegalStateException("Player attempting to lay their last card.");
+        }
+        if (!hand.remove(c)) {
+            throw new IllegalStateException("Player attempting to lay a card they don't have.");
+        }
+    }
+
+    public void layCards(Meld meld) { // TODO: make sure players can't lay all their cards
+        if (!hand.containsAll(meld.getCards())) {
+            throw new IllegalStateException("Player attempting to lay cards they don't have.");
+        }
+        if (hand.size() <= meld.getCards().size()) {
+            throw new IllegalStateException("Player attempting to lay their last card.");
+        }
+        hand.removeAll(meld.getCards());
     }
 
     public void sortBySuit() {
@@ -48,6 +56,10 @@ public class Player {
 
     public boolean handContains(Card c) {
         return hand.contains(c);
+    }
+
+    public int handSize() {
+        return hand.size();
     }
 
     /**
