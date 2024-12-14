@@ -1,6 +1,7 @@
 import java.util.Arrays;
 import java.util.Comparator;
 
+/**Represents a playing card */
 public class Card {
     public enum Suit {
         SPADES("\u0006", Output.Colors.BLUE), //♠
@@ -65,6 +66,7 @@ public class Card {
         }
     }
     
+    /**Comparator implementation to sort cards by rank */
     public static final class RankComparator implements Comparator<Card> {
         @Override
         public int compare(Card c1, Card c2) {
@@ -76,6 +78,7 @@ public class Card {
         }
     }
     
+    /**Comparator implementation to sort cards by suit */
     public static final class SuitComparator implements Comparator<Card> {
         @Override
         public int compare(Card c1, Card c2) {
@@ -90,11 +93,21 @@ public class Card {
     private Rank rank;
     private Suit suit;
 
+    /**
+     * Creates a Card object with the specified rank and suit
+     * @param rank - card rank (the number)
+     * @param suit - card suit (the symbol)
+     */
     public Card(Rank rank, Suit suit) {
         this.rank = rank;
         this.suit = suit;
     }
 
+    /**
+     * Creates a Card object from a string, meant for input from the terminal
+     * @param cardStr - card represented as a String in the form A♠ or As (suit can be symbol or letter)
+     * @throws IllegalArgumentException if the string isn't a valid card
+     */
     public Card(String cardStr) throws IllegalArgumentException {
         String rankStr = cardStr.substring(0, cardStr.length() - 1);
         Rank rank = Rank.getEnum(rankStr);
@@ -119,6 +132,9 @@ public class Card {
         return suit;
     }
 
+    /**
+     * @return card in the form A♠
+     */
     @Override
     public String toString() {
         return rank.toString() + suit.toString();
@@ -134,6 +150,10 @@ public class Card {
         }
     }
 
+    /**
+     * creates a full deck of cards
+     * @return sorted deck of cards
+     */
     public static Card[] fullDeck() {
         Card[] deck = new Card[52];
         for (int i = 0; i < deck.length; i++) {

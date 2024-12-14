@@ -2,26 +2,38 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**Represents a meld */
 public class Meld {
     public final static Meld SET = new Meld(new Card("6s"), new Card("6d"), new Card("6h"));
     public final static Meld RUN = new Meld(new Card("Ks"), new Card("As"), new Card("2s"), new Card("3s"));
 
     private List<Card> cards;
 
+    /**Creates an empty meld */
     public Meld() {
         cards = new ArrayList<>();
     }
 
+    /**
+     * Creates a meld with the given cards.
+     * This does NOT check if it is a valid meld, it should only be used for testing and creating example melds.
+     * @param cards - cards to add to the meld
+     */
     public Meld(List<Card> cards) {
         this.cards = new ArrayList<Card>(cards);
     }
-
+    
+    /**
+     * Creates a meld with the given cards.
+     * This does NOT check if it is a valid meld, it should only be used for testing and creating example melds.
+     * @param cards - cards to add to the meld
+     */
     public Meld(Card... cards) {
         this(Arrays.asList(cards));
     }
 
     /**
-     * tries to add a card to this meld
+     * Checks if the meld would create a valid set or run with the card, and adds it to the meld if so.
      * @param newCard - card to be added
      * @return {@code true} if card was added to meld
      */
@@ -63,6 +75,10 @@ public class Meld {
         return false;
     }
 
+    /**
+     * Checks if the meld is complete (has 3 or more cards)
+     * @return {@code true} if meld is complete
+     */
     public boolean isComplete() {
         return cards.size() >= 3;
     }
@@ -71,6 +87,9 @@ public class Meld {
         return cards;
     }
 
+    /**
+     * @return string representation of the cards in the meld
+     */
     @Override
     public String toString() {
         return cards.toString();

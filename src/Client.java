@@ -2,6 +2,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**Runner class */
 class Client {
     public static void main(String[] args) {
         Rummy.printInstructions();
@@ -11,6 +12,7 @@ class Client {
         // test();
     }
 
+    /**Runs tests to ensure Card and Meld are working properly */
     public static void test() {
         // new Card(String cardStr)
         System.out.print("jacks of spades: ");

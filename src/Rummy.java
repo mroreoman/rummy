@@ -7,6 +7,7 @@ import java.util.Queue;
 import java.util.Scanner;
 import java.util.Stack;
 
+/**Main class that controls the flow of a game of Rummy */
 public class Rummy {
     private Queue<Card> stock;
     private Stack<Card> discardPile;
@@ -85,7 +86,7 @@ public class Rummy {
     }
 
     /**
-     * play a turn of rummy
+     * Plays a turn of rummy (including the player and computer's turns)
      * @return {@code true} if the game should continue
      */
     private boolean turn() {
@@ -113,7 +114,10 @@ public class Rummy {
         return true;
     }
 
-    // returns null if player did not draw a card
+    /**
+     * Prints the menu for the user to draw a card and handles input
+     * @return the drawn card, or {@code null} if player did not draw a card
+     */
     private Card drawMenu() {
         out.println();
         out.println("Your hand: " + player);
@@ -164,7 +168,10 @@ public class Rummy {
         return drawnCard;
     }
 
-    // returns true if player discarded a card and turn should end
+    /**
+     * Prints the menu for the user to lay down cards, add to melds, and discard a card; then handles input and calls the corresponding method
+     * @return {@code true} if player discarded a card (and therefore the turn should end)
+     */
     private boolean discardMenu(Card drawnCard) {
         out.println();
         out.println("Your hand: " + player);
@@ -249,6 +256,7 @@ public class Rummy {
         return false;
     }
 
+    /**Lets player lay down a new meld */
     private void layMeld() {
         out.println();
         out.println("Selecting cards for meld.");
@@ -300,6 +308,7 @@ public class Rummy {
         }
     }
 
+    /**Lets player add cards to a meld */
     private void addToMeld() {
         out.println();
         out.println("Selecting meld to add to.");
@@ -362,6 +371,11 @@ public class Rummy {
         }
     }
 
+    /**
+     * Tries to select a card from the player's hand and throws exceptions if card cannot be selected
+     * @param cardStr - input from the terminal that should represent the card as specified in {@code new Card(String cardStr)}
+     * @return the card that was selected
+     */
     private Card selectCardFromHand(String cardStr) {
         Card card;
         try {
@@ -376,6 +390,7 @@ public class Rummy {
         }
     }
 
+    /**Runs the computer's turn */
     private void computerTurn() {
         // draw
         out.println();
