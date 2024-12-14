@@ -71,10 +71,6 @@ public class Meld {
         return cards;
     }
 
-    public boolean contains(Card c) {
-        return cards.contains(c);
-    }
-
     @Override
     public String toString() {
         return cards.toString();

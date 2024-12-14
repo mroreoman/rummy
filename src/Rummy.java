@@ -300,7 +300,6 @@ public class Rummy {
         }
     }
 
-    //TODO: make this nicer
     private void addToMeld() {
         out.println();
         out.println("Selecting meld to add to.");
@@ -323,7 +322,7 @@ public class Rummy {
                 continue;
             }
 
-            meld = melds.stream().filter(m -> m.contains(card)).findAny().orElse(null);
+            meld = melds.stream().filter(m -> m.getCards().contains(card)).findAny().orElse(null);
             if (meld == null) {
                 out.println(Output.error("No meld contains that card!"));
                 continue;
