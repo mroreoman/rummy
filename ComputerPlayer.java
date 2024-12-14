@@ -40,7 +40,7 @@ public class ComputerPlayer {
         hand.sort(new Card.RankComparator());
         sets.add(new Meld());
         for (Card c : hand) {
-            if (!sets.get(sets.size()-1).addCard(c)) {
+            if (!sets.getLast().addCard(c)) {
                 sets.add(new Meld());
             }
         }
@@ -57,7 +57,7 @@ public class ComputerPlayer {
         hand.sort(new Card.RankComparator());
         runs.add(new Meld());
         for (Card c : hand) {
-            if (!runs.get(runs.size()-1).addCard(c)) {
+            if (!runs.getLast().addCard(c)) {
                 runs.add(new Meld());
             }
         }

@@ -38,10 +38,7 @@ public class Output {
     }
 
     public void print(String text) {
-        for (int i = 0; i < indent; i++) {
-            System.out.print("\t");
-        }
-        System.out.print(text);
+        System.out.print("\t".repeat(indent) + text);
     }
 
     public static String error(String text) {

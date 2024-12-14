@@ -24,7 +24,7 @@ public class Player {
         if (hand.size() != 1) {
             throw new IllegalStateException("This method should only be used for the last card.");
         }
-        return hand.get(0);
+        return hand.getFirst();
     }
 
     public void layCard(Card c) {
