@@ -87,14 +87,6 @@ public class Card {
         }
     }
 
-    public static final Card[] DECK = new Card[52];
-    
-    static {
-        for (int i = 0; i < DECK.length; i++) {
-            DECK[i] = new Card(Rank.values()[i % 13], Suit.values()[i / 13]);
-        }
-    }
-
     private Rank rank;
     private Suit suit;
 
@@ -140,5 +132,13 @@ public class Card {
         } else {
             return false;
         }
+    }
+
+    public static Card[] fullDeck() {
+        Card[] deck = new Card[52];
+        for (int i = 0; i < deck.length; i++) {
+            deck[i] = new Card(Rank.values()[i % 13], Suit.values()[i / 13]);
+        }
+        return deck;
     }
 }

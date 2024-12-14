@@ -23,7 +23,7 @@ public class Rummy {
         out = new Output();
         out.println("Creating game of rummy with hand size " + handSize + ".");
 
-        List<Card> deck = Arrays.asList(Card.DECK);
+        List<Card> deck = Arrays.asList(Card.fullDeck());
         Collections.shuffle(deck);
         stock = new LinkedList<>(deck);
         out.println("Shuffled deck.");
