@@ -15,7 +15,7 @@ public class Rummy {
     private ComputerPlayer computer;
     private Scanner scan;
     private Output out;
-    private int handSize = 7;
+    private int handSize = 10;
 
     private int turn = 1;
 
@@ -240,6 +240,7 @@ public class Rummy {
         }
         if (toDiscard != null) {
             discardPile.push(player.discard(toDiscard));
+            out.println();
             out.println("Discarded " + toDiscard + ".");
             out.outdent();
             return true;
