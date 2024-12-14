@@ -24,6 +24,18 @@ Top of discard: K♠
 2 - Draw from discard pile
 3 - Sort hand by rank
 4 - Sort hand by suit
+Enter your choice: 3
+
+        Sorted hand by rank.
+
+Your hand: 4♣ 5♥ 6♥ 8♣ 8♠ 10♥ 10♦ Q♥ K♣ K♥
+Melds: []
+Top of discard: K♠
+
+1 - Draw from stock
+2 - Draw from discard pile
+3 - Sort hand by rank
+4 - Sort hand by suit
 Enter your choice: 4
 
         Sorted hand by suit.
