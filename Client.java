@@ -7,16 +7,11 @@ class Client {
         Rummy.printInstructions();
         Rummy game = new Rummy();
         game.play();
+
+        // test();
     }
 
     public static void test() {
-        // Card.toString()
-        System.out.print("full deck: ");
-        for (Card c : Card.DECK) {
-            System.out.print(c + " ");
-        }
-        System.out.println();
-
         // new Card(String cardStr)
         System.out.print("jacks of spades: ");
         Card c = new Card(Card.Rank.JACK, Card.Suit.SPADES);
@@ -39,7 +34,7 @@ class Client {
         }
 
         // Card.RankComparator and Card.SuitComparator
-        List<Card> deck = Arrays.asList(Card.DECK);
+        List<Card> deck = Arrays.asList(Card.fullDeck());
         System.out.println("full deck:\n" + deck);
         Collections.shuffle(deck);
         System.out.println("shuffled deck:\n" + deck);
