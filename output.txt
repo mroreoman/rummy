@@ -1,0 +1,483 @@
+Welcome to Rummy!
+The goal of the game is to get rid of all of your cards.
+You get rid of cards by making melds and placing them on the table, or adding to the melds on the table.
+A meld is a group of cards of 3 or more cards that makes a set or run.
+Set - cards have the same rank like [6♠, 6♦, 6♥]
+Run - cards are in order in the same suit like [K♠, A♠, 2♠, 3♠]
+You start each turn by drawing a card from either the stock or the discard pile.
+Then you will take any actions you wish to take, such as laying down or adding to a meld.
+Finally, you will discard a card to end your turn.
+Have fun!
+
+Creating game of rummy with hand size 10.
+Shuffled deck.
+Dealt cards.
+Starting game.
+
+================== Turn 1 ==================
+
+Your hand: 4♣ 6♥ 8♣ 5♥ Q♥ 8♠ 10♦ K♣ K♥ 10♥
+Melds: []
+Top of discard: K♠
+
+1 - Draw from stock
+2 - Draw from discard pile
+3 - Sort hand by rank
+4 - Sort hand by suit
+Enter your choice: 4
+
+        Sorted hand by suit.
+
+Your hand: 8♠ 4♣ 8♣ K♣ 5♥ 6♥ 10♥ Q♥ K♥ 10♦
+Melds: []
+Top of discard: K♠
+
+1 - Draw from stock
+2 - Draw from discard pile
+3 - Sort hand by rank
+4 - Sort hand by suit
+Enter your choice: 2
+
+        Drew K♠ from discard pile.
+
+        Your hand: 8♠ 4♣ 8♣ K♣ 5♥ 6♥ 10♥ Q♥ K♥ 10♦ K♠
+        Melds: []
+        Drawn card: K♠
+
+        1 - Lay down meld
+        2 - Add to meld
+        3 - Sort hand by rank
+        4 - Sort hand by suit
+        5 - Choose card to discard (ends turn)
+        6 - Discard drawn card (ends turn)
+        Enter your choice: 1
+
+                Selecting cards for meld.
+
+                Meld: []
+                Enter card (like A♠ or As), f to finish the meld, or x to cancel: ks
+                Added K♠ to meld.
+
+                Meld: [K♠]
+                Enter card (like A♠ or As), f to finish the meld, or x to cancel: kh
+                Added K♥ to meld.
+
+                Meld: [K♠, K♥]
+                Enter card (like A♠ or As), f to finish the meld, or x to cancel: kc
+                Added K♣ to meld.
+
+                Meld: [K♠, K♥, K♣]
+                Enter card (like A♠ or As), f to finish the meld, or x to cancel: f
+                Laid [K♠, K♥, K♣] on the table.
+
+        Your hand: 8♠ 4♣ 8♣ 5♥ 6♥ 10♥ Q♥ 10♦   
+        Melds: [[K♠, K♥, K♣]]
+        Drawn card: K♠
+
+        1 - Lay down meld
+        2 - Add to meld
+        3 - Sort hand by rank
+        4 - Sort hand by suit
+        5 - Choose card to discard (ends turn)
+        6 - Discard drawn card (ends turn)
+        Enter your choice: 5
+
+                Enter card (like A♠ or As) to discard, or x to cancel: qh
+
+                Discarded Q♥.
+
+Computer drew Q♥ from discard pile.
+Computer added K♦ to [K♠, K♥, K♣, K♦]
+Computer discarded Q♥.
+Computer has 9 cards left.
+
+================== Turn 2 ==================
+
+Your hand: 8♠ 4♣ 8♣ 5♥ 6♥ 10♥ 10♦
+Melds: [[K♠, K♥, K♣, K♦]]
+Top of discard: Q♥
+
+1 - Draw from stock
+2 - Draw from discard pile
+3 - Sort hand by rank
+4 - Sort hand by suit
+Enter your choice: 1
+
+        Drew 5♦ from stock.
+
+        Your hand: 8♠ 4♣ 8♣ 5♥ 6♥ 10♥ 10♦ 5♦
+        Melds: [[K♠, K♥, K♣, K♦]]
+        Drawn card: 5♦
+
+        1 - Lay down meld
+        2 - Add to meld
+        3 - Sort hand by rank
+        4 - Sort hand by suit
+        5 - Choose card to discard (ends turn)
+        6 - Discard drawn card (ends turn)
+        Enter your choice: 6
+
+                Discarded 5♦.
+
+Computer drew 6♣ from stock.
+Computer discarded 6♣.
+Computer has 9 cards left.
+
+================== Turn 3 ==================
+
+Your hand: 8♠ 4♣ 8♣ 5♥ 6♥ 10♥ 10♦
+Melds: [[K♠, K♥, K♣, K♦]]
+Top of discard: 6♣
+
+1 - Draw from stock
+2 - Draw from discard pile
+3 - Sort hand by rank
+4 - Sort hand by suit
+Enter your choice: 1
+
+        Drew 3♠ from stock.
+
+        Your hand: 8♠ 4♣ 8♣ 5♥ 6♥ 10♥ 10♦ 3♠
+        Melds: [[K♠, K♥, K♣, K♦]]
+        Drawn card: 3♠
+
+        1 - Lay down meld
+        2 - Add to meld
+        3 - Sort hand by rank
+        4 - Sort hand by suit
+        5 - Choose card to discard (ends turn)
+        6 - Discard drawn card (ends turn)
+        Enter your choice: 6
+
+                Discarded 3♠.
+
+Computer drew 3♠ from discard pile.
+Computer discarded Q♦.
+Computer has 9 cards left.
+
+================== Turn 4 ==================
+
+Your hand: 8♠ 4♣ 8♣ 5♥ 6♥ 10♥ 10♦
+Melds: [[K♠, K♥, K♣, K♦]]
+Top of discard: Q♦
+
+1 - Draw from stock
+2 - Draw from discard pile
+3 - Sort hand by rank
+4 - Sort hand by suit
+Enter your choice: 1
+
+        Drew 5♠ from stock.
+
+        Your hand: 8♠ 4♣ 8♣ 5♥ 6♥ 10♥ 10♦ 5♠
+        Melds: [[K♠, K♥, K♣, K♦]]
+        Drawn card: 5♠
+
+        1 - Lay down meld
+        2 - Add to meld
+        3 - Sort hand by rank
+        4 - Sort hand by suit
+        5 - Choose card to discard (ends turn)
+        6 - Discard drawn card (ends turn)
+        Enter your choice: 5
+
+                Enter card (like A♠ or As) to discard, or x to cancel: 4c
+
+                Discarded 4♣.
+
+Computer drew 4♣ from discard pile.
+Computer discarded 4♣.
+Computer has 9 cards left.
+
+================== Turn 5 ==================
+
+Your hand: 8♠ 8♣ 5♥ 6♥ 10♥ 10♦ 5♠
+Melds: [[K♠, K♥, K♣, K♦]]
+Top of discard: 4♣
+
+1 - Draw from stock
+2 - Draw from discard pile
+3 - Sort hand by rank
+4 - Sort hand by suit
+Enter your choice: 1
+
+        Drew J♣ from stock.
+
+        Your hand: 8♠ 8♣ 5♥ 6♥ 10♥ 10♦ 5♠ J♣
+        Melds: [[K♠, K♥, K♣, K♦]]
+        Drawn card: J♣
+
+        1 - Lay down meld
+        2 - Add to meld
+        3 - Sort hand by rank
+        4 - Sort hand by suit
+        5 - Choose card to discard (ends turn)
+        6 - Discard drawn card (ends turn)
+        Enter your choice: 6
+
+                Discarded J♣.
+
+Computer drew 7♦ from stock.
+Computer discarded A♥.
+Computer has 9 cards left.
+
+================== Turn 6 ==================
+
+Your hand: 8♠ 8♣ 5♥ 6♥ 10♥ 10♦ 5♠
+Melds: [[K♠, K♥, K♣, K♦]]
+Top of discard: A♥
+
+1 - Draw from stock
+2 - Draw from discard pile
+3 - Sort hand by rank
+4 - Sort hand by suit
+Enter your choice: 1
+
+        Drew 9♠ from stock.
+
+        Your hand: 8♠ 8♣ 5♥ 6♥ 10♥ 10♦ 5♠ 9♠
+        Melds: [[K♠, K♥, K♣, K♦]]
+        Drawn card: 9♠
+
+        1 - Lay down meld
+        2 - Add to meld
+        3 - Sort hand by rank
+        4 - Sort hand by suit
+        5 - Choose card to discard (ends turn)
+        6 - Discard drawn card (ends turn)
+        Enter your choice: 4
+
+        Your hand: 5♠ 8♠ 9♠ 8♣ 5♥ 6♥ 10♥ 10♦
+        Melds: [[K♠, K♥, K♣, K♦]]
+        Drawn card: 9♠
+
+        1 - Lay down meld
+        2 - Add to meld
+        3 - Sort hand by rank
+        4 - Sort hand by suit
+        5 - Choose card to discard (ends turn)
+        6 - Discard drawn card (ends turn)
+        Enter your choice: 5
+
+                Enter card (like A♠ or As) to discard, or x to cancel: 5s
+
+                Discarded 5♠.
+
+Computer drew 5♠ from discard pile.
+Computer discarded J♠.
+Computer has 9 cards left.
+
+================== Turn 7 ==================
+
+Your hand: 8♠ 9♠ 8♣ 5♥ 6♥ 10♥ 10♦
+Melds: [[K♠, K♥, K♣, K♦]]
+Top of discard: J♠
+
+1 - Draw from stock
+2 - Draw from discard pile
+3 - Sort hand by rank
+4 - Sort hand by suit
+Enter your choice: 1
+
+        Drew 7♠ from stock.
+
+        Your hand: 8♠ 9♠ 8♣ 5♥ 6♥ 10♥ 10♦ 7♠
+        Melds: [[K♠, K♥, K♣, K♦]]
+        Drawn card: 7♠
+
+        1 - Lay down meld
+        2 - Add to meld
+        3 - Sort hand by rank
+        4 - Sort hand by suit
+        5 - Choose card to discard (ends turn)
+        6 - Discard drawn card (ends turn)
+        Enter your choice: 1
+
+                Selecting cards for meld.
+
+                Meld: []
+                Enter card (like A♠ or As), f to finish the meld, or x to cancel: 8s
+                Added 8♠ to meld.
+
+                Meld: [8♠]
+                Enter card (like A♠ or As), f to finish the meld, or x to cancel: 9s
+                Added 9♠ to meld.
+
+                Meld: [8♠, 9♠]
+                Enter card (like A♠ or As), f to finish the meld, or x to cancel: 7s
+                Added 7♠ to meld.
+
+                Meld: [7♠, 8♠, 9♠]
+                Enter card (like A♠ or As), f to finish the meld, or x to cancel: f
+                Laid [7♠, 8♠, 9♠] on the table.
+
+        Your hand: 8♣ 5♥ 6♥ 10♥ 10♦
+        Melds: [[K♠, K♥, K♣, K♦], [7♠, 8♠, 9♠]]
+        Drawn card: 7♠
+
+        1 - Lay down meld
+        2 - Add to meld
+        3 - Sort hand by rank
+        4 - Sort hand by suit
+        5 - Choose card to discard (ends turn)
+        6 - Discard drawn card (ends turn)
+        Enter your choice: 5
+
+                Enter card (like A♠ or As) to discard, or x to cancel: 8c
+
+                Discarded 8♣.
+
+Computer drew 8♣ from discard pile.
+Computer discarded 3♥.
+Computer has 9 cards left.
+
+================== Turn 8 ==================
+
+Your hand: 5♥ 6♥ 10♥ 10♦
+Melds: [[K♠, K♥, K♣, K♦], [7♠, 8♠, 9♠]]
+Top of discard: 3♥
+
+1 - Draw from stock
+2 - Draw from discard pile
+3 - Sort hand by rank
+4 - Sort hand by suit
+Enter your choice: 1
+
+        Drew J♦ from stock.
+
+        Your hand: 5♥ 6♥ 10♥ 10♦ J♦
+        Melds: [[K♠, K♥, K♣, K♦], [7♠, 8♠, 9♠]]
+        Drawn card: J♦
+
+        1 - Lay down meld
+        2 - Add to meld
+        3 - Sort hand by rank
+        4 - Sort hand by suit
+        5 - Choose card to discard (ends turn)
+        6 - Discard drawn card (ends turn)
+        Enter your choice: 5
+
+                Enter card (like A♠ or As) to discard, or x to cancel: 10h
+
+                Discarded 10♥.
+
+Computer drew 10♥ from discard pile.
+Computer discarded 4♥.
+Computer has 9 cards left.
+
+================== Turn 9 ==================
+
+Your hand: 5♥ 6♥ 10♦ J♦
+Melds: [[K♠, K♥, K♣, K♦], [7♠, 8♠, 9♠]]
+Top of discard: 4♥
+
+1 - Draw from stock
+2 - Draw from discard pile
+3 - Sort hand by rank
+4 - Sort hand by suit
+Enter your choice: 2
+
+        Drew 4♥ from discard pile.
+
+        Your hand: 5♥ 6♥ 10♦ J♦ 4♥
+        Melds: [[K♠, K♥, K♣, K♦], [7♠, 8♠, 9♠]]
+        Drawn card: 4♥
+
+        1 - Lay down meld
+        2 - Add to meld
+        3 - Sort hand by rank
+        4 - Sort hand by suit
+        5 - Choose card to discard (ends turn)
+        6 - Discard drawn card (ends turn)
+        Enter your choice: 1
+
+                Selecting cards for meld.
+
+                Meld: []
+                Enter card (like A♠ or As), f to finish the meld, or x to cancel: 5h
+                Added 5♥ to meld.
+
+                Meld: [5♥]
+                Enter card (like A♠ or As), f to finish the meld, or x to cancel: 6h
+                Added 6♥ to meld.
+
+                Meld: [5♥, 6♥]
+                Enter card (like A♠ or As), f to finish the meld, or x to cancel: 4h
+                Added 4♥ to meld.
+
+                Meld: [4♥, 5♥, 6♥]
+                Enter card (like A♠ or As), f to finish the meld, or x to cancel: f
+                Laid [4♥, 5♥, 6♥] on the table.
+
+        Your hand: 10♦ J♦
+        Melds: [[K♠, K♥, K♣, K♦], [7♠, 8♠, 9♠], [4♥, 5♥, 6♥]]
+        Drawn card: 4♥
+
+        1 - Lay down meld
+        2 - Add to meld
+        3 - Sort hand by rank
+        4 - Sort hand by suit
+        5 - Choose card to discard (ends turn)
+        6 - Discard drawn card (ends turn)
+        Enter your choice: 5
+
+                Enter card (like A♠ or As) to discard, or x to cancel: jd
+
+                Discarded J♦.
+
+Computer drew 2♥ from stock.
+Computer added 7♥ to [4♥, 5♥, 6♥, 7♥]
+Computer added 8♥ to [4♥, 5♥, 6♥, 7♥, 8♥]
+Computer discarded 2♥.
+Computer has 7 cards left.
+
+================== Turn 10 ==================
+
+Your hand: 10♦
+Melds: [[K♠, K♥, K♣, K♦], [7♠, 8♠, 9♠], [4♥, 5♥, 6♥, 7♥, 8♥]]
+Top of discard: 2♥
+
+1 - Draw from stock
+2 - Draw from discard pile
+3 - Sort hand by rank
+4 - Sort hand by suit
+Enter your choice: 1
+
+        Drew 10♠ from stock.
+
+        Your hand: 10♦ 10♠
+        Melds: [[K♠, K♥, K♣, K♦], [7♠, 8♠, 9♠], [4♥, 5♥, 6♥, 7♥, 8♥]]
+        Drawn card: 10♠
+
+        1 - Lay down meld
+        2 - Add to meld
+        3 - Sort hand by rank
+        4 - Sort hand by suit
+        5 - Choose card to discard (ends turn)
+        6 - Discard drawn card (ends turn)
+        Enter your choice: 2
+
+                Selecting meld to add to.
+                Melds: [[K♠, K♥, K♣, K♦], [7♠, 8♠, 9♠], [4♥, 5♥, 6♥, 7♥, 8♥]]
+                Enter a card that is in the meld you want to select, or x to cancel: 7s
+                Selected meld [7♠, 8♠, 9♠]
+                Selecting card to add to meld
+                Enter card (like A♠ or As), or x to cancel: 10s
+                Meld: [7♠, 8♠, 9♠, 10♠]
+
+        Your hand: 10♦
+        Melds: [[K♠, K♥, K♣, K♦], [7♠, 8♠, 9♠, 10♠], [4♥, 5♥, 6♥, 7♥, 8♥]]
+        Drawn card: 10♠
+
+        1. Discard your last card (and win the game)
+        Enter your choice: 1
+
+                Discarded 10♦.
+
+================= Game Done =================
+
+you won!!!
+Melds: [[K♠, K♥, K♣, K♦], [7♠, 8♠, 9♠, 10♠], [4♥, 5♥, 6♥, 7♥, 8♥]]
+Your hand: player has won.
+Computer's hand: 2♠ 3♠ 5♠ 8♣ 10♥ 7♦ 9♦
+Top of discard: 10♦
