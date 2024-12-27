@@ -2,6 +2,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**Runner class */
 class Client {
     public static void main(String[] args) {
         Rummy.printInstructions();
@@ -11,17 +12,8 @@ class Client {
         // test();
     }
 
+    /**Runs tests to ensure Card and Meld are working properly */
     public static void test() {
-        // Card.RankComparator and Card.SuitComparator
-        List<Card> deck = Arrays.asList(Card.DECK);
-        System.out.println("full deck:\n" + deck);
-        Collections.shuffle(deck);
-        System.out.println("shuffled deck:\n" + deck);
-        deck.sort(new Card.SuitComparator());
-        System.out.println("sorted by suit:\n" + deck);
-        deck.sort(new Card.RankComparator());
-        System.out.println("sorted by rank:\n" + deck);
-
         // new Card(String cardStr)
         System.out.print("jacks of spades: ");
         Card c = new Card(Card.Rank.JACK, Card.Suit.SPADES);
@@ -42,6 +34,16 @@ class Client {
         } catch (IllegalArgumentException e) {
             System.out.println("invalid rank: " + e);
         }
+
+        // Card.RankComparator and Card.SuitComparator
+        List<Card> deck = Arrays.asList(Card.fullDeck());
+        System.out.println("full deck:\n" + deck);
+        Collections.shuffle(deck);
+        System.out.println("shuffled deck:\n" + deck);
+        deck.sort(new Card.SuitComparator());
+        System.out.println("sorted by suit:\n" + deck);
+        deck.sort(new Card.RankComparator());
+        System.out.println("sorted by rank:\n" + deck);
         
         // Card.equals()
         Card cc = new Card("Js");
